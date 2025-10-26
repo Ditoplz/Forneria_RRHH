@@ -6,9 +6,8 @@
     <div class="col">
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href=#>La Forneria</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav"
+                <a class="navbar-brand" href="#">La Forneria</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -23,12 +22,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">RRHH</a>
                         </li>
-                        {% if user.is_authenticaded %}
+                        {% if user.is_authenticated %}
                         <li class="nav-item">
                         <a class="nav-link text-dark" href="#">Usuario: <b>{{ user.username }}</b></a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link text-danger" href="{% url 'logout' %}">Cerrar Sesión</a>
+                            <a class="nav-link text-danger" href="{% url 'login' %}">Cerrar Sesión</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
@@ -38,7 +37,6 @@
                     </ul>
                 </div>
             </div>
-        </nav>
     </div>
 </div>
 {% endblock %}
@@ -46,11 +44,23 @@
 {% block contenido %}
 <div class="row">
     <div class="col-12 mt-5">
+        <div class="text-dark h1">Bienvenido {{ user.first_name }} {{ user.last_name }} a la Forneria Emporio</div>
+    </div>
+    <div class="col mt-5">
         <div class="card shadow-lg" style="width: 18rem;">
-            <img src={% static 'images/inventario.png' %} class="card-img-top" alt="logo la forneria">
+            <img src="{% static 'images/inventario.png' %}" class="card-img-top" alt="logo la forneria">
             <div class="card-body">
                 <h5 class="card-title">Mantenedor de Ventas</h5>
                 <a class="btn btn-success" href="#">Ingresar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col mt-5">
+        <div class="card shadow-lg" style="width: 18rem;">
+            <img src="{% static 'images/personas.png' %}" class="card-img-top" alt="logo la forneria">
+            <div class="card-body">
+                <h5 class="card-title">Mantenedor de RRHH</h5>
+                <a class="btn btn-primary" href="#">Ingresar</a>
             </div>
         </div>
     </div>
