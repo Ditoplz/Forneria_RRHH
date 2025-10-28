@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
+
+from rrhh.models import Empleado
+from .forms import EmpleadoForm
 
 @login_required
 def index(request):
@@ -8,3 +11,61 @@ def index(request):
 @login_required
 def gestor_rrhh(request):
     return render(request, 'gestor_rrhh.html')
+
+@login_required
+def mantenedor_empleados(request):
+    return render(request, 'mantenedor_empleados.html')
+
+@login_required
+def mantenedor_contratos(request):
+    return render(request, 'mantenedor_contratos.html')
+
+@login_required
+def mantenedor_usuarios(request):
+    return render(request, 'mantenedor_usuarios.html')
+
+@login_required
+def crear_emplado(request):
+    if request.method == 'POST':
+        form = EmpleadoForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = EmpleadoForm()
+    
+    return render(request, 'crear_empleado.html', {'form': form})
+
+def todos_empleados(request):
+    empleados=Empleado.objects.all()
+    
+    data={
+        'empleados':empleados
+    }
+    
+    return render(request, 'todos_empleados.html', data)
+
+def cargar_editar_empleado(request, id_empleado):
+    empleado= get_object_or_404(Empleado,id=id_empleado)
+    form = EmpleadoForm(instance=empleado)
+    
+    return render(request, 'editar_empleado.html', {'form': form, 'empleado': empleado})
+
+def editar_empleado(request, id_empleado):
+    empleado= get_object_or_404(Empleado,id=id_empleado)
+    
+    if request.method == 'POST':
+        form = EmpleadoForm(request.POST, instance=empleado)
+        if form.is_valid():
+            form.save()
+    else:
+        form = EmpleadoForm(instance=empleado)
+    
+    return render(request, 'mantenedor_empleados.html', {'form': form, 'empleado': empleado})
+
+def eliminar_empleado(request, id_empleado):
+    empleado = get_object_or_404(Empleado, id=id_empleado)
+    
+    if request.method == 'POST':
+        empleado.delete()
+        
+    return render(request, 'mantenedor_empleados.html')

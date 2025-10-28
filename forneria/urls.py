@@ -8,5 +8,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('ventas/', include('ventas.urls')),
     path('rrhh/', include('rrhh.urls')),
-    path('accounts', include('django.contrib.auth.urls')),
-    ]
+    path('accounts/', include('django.contrib.auth.urls')),
+]

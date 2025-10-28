@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="row">
+    <div class="col-12 mt-5">
+        <div class="text-dark h1">Bienvenido {{ user.first_name }} {{ user.last_name }} a la Forneria Emporio</div>
+    </div>
+    <div class="col mt-5">
+        <div class="card shadow-lg" style="width: 18rem;">
+            <img src="{% static 'images/contratos_gestor.jpg' %}" class="card-img-top" alt="logo la forneria">
+            <div class="card-body">
+                <h5 class="card-title">Contratos</h5>
+                <a class="btn btn-success" href="#">Ingresar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col mt-5">
+        <div class="card shadow-lg" style="width: 18rem;">
+            <img src="{% static 'images/cargos_gestor.jpg' %}" class="card-img-top" alt="logo la forneria">
+            <div class="card-body">
+                <h5 class="card-title">Cargos</h5>
+                <a class="btn btn-success" href="#">Ingresar</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
