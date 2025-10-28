@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block encabezado %}
+  <h1 class="mt-4">Módulo Recursos Humanos</h1>
+{% endblock %}
+
+{% block contenido %}
+  <div class="row text-center">
+    <div class="col-md-4 mb-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Contratos y Cargos</h5>
+          <p class="card-text">Gestiona contratos laborales y cargos disponibles.</p>
+          <a href="{% url 'gestionar_contratos' %}" class="btn btn-outline-primary">Ingresar</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Usuarios y Cuentas</h5>
+          <p class="card-text">Administra usuarios del sistema y sus roles.</p>
+          <a href="{% url 'gestionar_usuarios' %}" class="btn btn-outline-success">Ingresar</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card shadow">
+        <div class="card-body">
+          <h5 class="card-title">Empleados y Liquidaciones</h5>
+          <p class="card-text">Consulta datos de empleados y sus liquidaciones.</p>
+          <a href="{% url 'gestionar_empleados' %}" class="btn btn-outline-info">Ingresar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
