@@ -6,7 +6,7 @@ from .forms import EmpleadoForm
 
 @login_required
 def index(request):
-    return render(request, 'rrhh/index.html')
+    return render(request,'rrhh/index.html')
 
 @login_required
 def gestor_rrhh(request):
