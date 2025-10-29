@@ -14,3 +14,11 @@ class EmpleadoForm(forms.ModelForm):
     class Meta:
         model = Empleado
         fields = '__all__'
+        
+class CargoForm(forms.ModelForm):
+    nombre=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese Nombre del Cargo'}))
+    descripcion=forms.CharField(widget=forms.Textarea(attrs={'class':'form-control','placeholder':'Ingrese Descripción del Cargo','rows':3}))
+    
+    class Meta:
+        model = Cargo
+        fields = '__all__'

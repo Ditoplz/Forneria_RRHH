@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 
-from rrhh.models import Empleado
-from .forms import EmpleadoForm
+from rrhh.models import Empleado, Cargo
+from .forms import EmpleadoForm, CargoForm
 
 @login_required
 def index(request):
@@ -25,7 +25,7 @@ def mantenedor_usuarios(request):
     return render(request, 'mantenedor_usuarios.html')
 
 @login_required
-def crear_emplado(request):
+def crear_empleado(request):
     if request.method == 'POST':
         form = EmpleadoForm(request.POST)
         if form.is_valid():
@@ -69,3 +69,50 @@ def eliminar_empleado(request, id_empleado):
         empleado.delete()
         
     return render(request, 'mantenedor_empleados.html')
+
+
+@login_required
+def crear_cargo(request):
+    if request.method == 'POST':
+        form = CargoForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = CargoForm()
+    
+    return render(request, 'crear_cargo.html', {'form': form})
+
+def todos_cargos(request):
+    cargos=Cargo.objects.all()
+    
+    data={
+        'cargos':cargos
+    }
+    
+    return render(request, 'todos_cargos.html', data)
+
+def cargar_editar_cargo(request, id_cargo):
+    cargo= get_object_or_404(Cargo,id=id_cargo)
+    form = CargoForm(instance=cargo)
+    
+    return render(request, 'editar_cargo.html', {'form': form, 'cargo': cargo})
+
+def editar_cargo(request, id_cargo):
+    cargo= get_object_or_404(Cargo,id=id_cargo)
+    
+    if request.method == 'POST':
+        form = CargoForm(request.POST, instance=cargo)
+        if form.is_valid():
+            form.save()
+    else:
+        form = CargoForm(instance=cargo)
+    
+    return render(request, 'mantenedor_cargos.html', {'form': form, 'cargo': cargo})
+
+def eliminar_cargo(request, id_cargo):
+    cargo = get_object_or_404(Cargo, id=id_cargo)
+    
+    if request.method == 'POST':
+        cargo.delete()
+        
+    return render(request, 'mantenedor_cargos.html')
