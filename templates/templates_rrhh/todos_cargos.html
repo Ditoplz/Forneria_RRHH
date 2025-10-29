@@ -8,10 +8,11 @@
 {% block contenido %}
 <div class='row'>
     <div class='col'>
-        <div class='row'>
+        <div class='row align-items-center mb-4'>
             <div class='col-9'>
                 <div class='h2'>Listado de Cargos</div>
             </div>
+            <a href="{% url 'mantenedor_contratos' %}" class="btn btn-dark col-auto ms-auto">Volver</a>
             <div class='col-3'>
                 <a class='btn btn-primary' href="{% url 'crear_cargo' %}">Crear Nuevo Cargo</a>
             </div>

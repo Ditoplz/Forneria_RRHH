@@ -7,8 +7,14 @@
 
 {% block contenido %}
 <div class="row">
-    <div class="col-12 mt-5">
-        <div class="text-dark h1">Bienvenido {{ user.first_name }} {{ user.last_name }} a la Forneria Emporio</div>
+    <div class="row align-items-center mt-5 mb-4">
+        <div class="col-9">
+            <div class="text-dark h1">Mantenedor de Usuarios</div>
+            <div class="text-muted h5">Bienvenido {{ user.first_name }} {{ user.last_name }}</div>
+        </div>
+        <div class="col-3 text-end">
+            <a href="{% url 'gestor_rrhh' %}" class="btn btn-dark">Volver</a>
+        </div>
     </div>
     <div class="col mt-5">
         <div class="card shadow-lg" style="width: 18rem;">
@@ -33,7 +39,7 @@
             <img src="{% static 'images/usuarios.png' %}" class="card-img-top" alt="logo la forneria">
             <div class="card-body">
                 <h5 class="card-title">Usuarios y Cuentas</h5>
-                <a class="btn btn-success" href="#">Ingresar</a>
+                <a class="btn btn-success" href="{% url 'todos_usuarios' %}">Ingresar</a>
             </div>
         </div>
     </div>

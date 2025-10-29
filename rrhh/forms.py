@@ -22,3 +22,17 @@ class CargoForm(forms.ModelForm):
     class Meta:
         model = Cargo
         fields = '__all__'
+        
+class UsuarioForm(forms.ModelForm):
+    nombre=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese Nombre de Usuario'}))
+    paterno=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese Apellido Paterno'}))
+    materno=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese Apellido Materno'}))
+    run=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'12345678-9'}))
+    correo=forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'Ej: usuario@dominio.com'}))
+    fono=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ej: +56912345678'}))
+    direccion=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese Dirección'}))
+    rol=forms.ModelChoiceField(queryset=Roles.objects.all(), widget=forms.Select(attrs={'class':'form-control'}))
+    
+    class Meta:
+        model = Usuarios
+        fields = '__all__'

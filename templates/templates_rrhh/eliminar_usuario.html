@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class='row'>
+    <div class='col-10 offset-1'>
+        <h3>Eliminar Usuario</h3>
+        <div class='alert alert-danger h5'>
+            ¿Está seguro que desea eliminar al usuario:
+            <strong>{{ usuarios.nombres }} {{ usuarios.paterno }} {{ usuarios.materno }}</strong>?
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class='row'>
+                <div class='col'>
+                    <a class='btn btn-dark' href="{% url 'todos_usuarios' %}">Cancelar</a>
+                </div>
+                <div class='col'>
+                    <button class='btn btn-danger' type="submit">Eliminar Usuario</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
