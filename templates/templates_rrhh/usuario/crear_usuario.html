@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container">
+        <div class="row mt-5">
+            <div class="col">
+                <h2>Crear Nuevo Usuario</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors}}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

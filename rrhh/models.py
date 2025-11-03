@@ -1,4 +1,6 @@
+import re
 from django.db import models
+from django.forms import ValidationError
 
 
 class Alertas(models.Model):
@@ -46,14 +48,14 @@ class AuthPermission(models.Model):
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
+    is_superuser = models.IntegerField(blank=True, null=True)
     username = models.CharField(unique=True, max_length=150)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
+    email = models.CharField(unique=True, max_length=254)
+    is_staff = models.IntegerField(blank=True, null=True)
+    is_active = models.IntegerField(blank=True, null=True)
+    date_joined = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -83,13 +85,15 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Cargo(models.Model):
-    id = models.IntegerField(primary_key=True)
-    nombre = models.CharField(max_length=45)
-    descripcion = models.CharField(max_length=45)
+    nombre = models.CharField(max_length=45, unique=True)
+    descripcion = models.CharField(max_length=300, blank=True)
 
     class Meta:
         managed = False
         db_table = 'cargo'
+        
+    def __str__(self):
+        return self.nombre
 
 
 class Categorias(models.Model):
@@ -112,7 +116,6 @@ class Clientes(models.Model):
 
 
 class Contrato(models.Model):
-    id = models.AutoField(primary_key=True)
     detalle_contrato = models.CharField(max_length=45)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
@@ -124,14 +127,9 @@ class Contrato(models.Model):
     class Meta:
         managed = False
         db_table = 'contrato'
-        constraints = [
-            models.UniqueConstraint(fields=['empleado', 'fecha_inicio'], name='unique_contrato_empleado_fecha')
-        ]
-
 
 
 class CuentaBancaria(models.Model):
-    id = models.IntegerField(primary_key=True)
     banco = models.CharField(max_length=45)
     tipo_cuenta = models.CharField(max_length=45)
     numero_cuenta = models.IntegerField()
@@ -144,7 +142,6 @@ class CuentaBancaria(models.Model):
 
 
 class Departamento(models.Model):
-    id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=45)
     descripcion = models.CharField(max_length=45)
 
@@ -165,13 +162,32 @@ class DetalleVenta(models.Model):
         db_table = 'detalle_venta'
 
 
+REGIONES = [
+    ('XV - Arica y Parinacota', 'XV - Arica y Parinacota'),
+    ('I - Tarapacá', 'I - Tarapacá'),
+    ('II - Antofagasta', 'II - Antofagasta'),
+    ('III - Atacama', 'III - Atacama'),
+    ('IV - Coquimbo', 'IV - Coquimbo'),
+    ('V - Valparaíso', 'V - Valparaíso'),
+    ('RM - Metropolitana de Santiago', 'RM - Metropolitana de Santiago'),
+    ('VI - O’Higgins', 'VI - O’Higgins'),
+    ('VII - Maule', 'VII - Maule'),
+    ('VIII - Biobío', 'VIII - Biobío'),
+    ('IX - La Araucanía', 'IX - La Araucanía'),
+    ('X - Los Lagos', 'X - Los Lagos'),
+    ('XI - Aysén', 'XI - Aysén'),
+    ('XII - Magallanes', 'XII - Magallanes'),
+    ('XIV - Los Ríos', 'XIV - Los Ríos'),
+    ('XIII - Ñuble', 'XIII - Ñuble'),
+]
+
 class Direccion(models.Model):
     calle = models.CharField(max_length=100)
     numero = models.CharField(max_length=10)
     depto = models.CharField(max_length=10, blank=True, null=True)
     comuna = models.CharField(max_length=100)
-    region = models.CharField(max_length=100)
-    codigo_postal = models.CharField(max_length=45, blank=True, null=True)
+    region = models.CharField(max_length=100, choices=REGIONES)
+    codigo_postal = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -228,18 +244,31 @@ class Empleado(models.Model):
     a_paterno = models.CharField(db_column='A_paterno', max_length=45)  # Field name made lowercase.
     a_materno = models.CharField(db_column='A_materno', max_length=45)  # Field name made lowercase.
     run = models.CharField(unique=True, max_length=45)
-    correo = models.CharField(max_length=100)
-    fono = models.IntegerField(unique=True)
-    clave = models.CharField(max_length=45)
-    nacionalidad = models.CharField(max_length=45)
+    correo = models.EmailField(max_length=100, unique=True)
+    fono = models.CharField(unique=True, max_length=100)
+    id_direccion = models.IntegerField(unique=True, null=False)
+    #direccion= models.ForeignKey('Direccion',to_field='id',db_column='id_direccion',on_delete=models.CASCADE)
 
     class Meta:
         managed = False
         db_table = 'empleado'
+        
+    def clean_correo(self):
+        correo = self.cleaned_data['correo']
+        if Empleado.objects.filter(correo=correo).exists():
+            raise ValidationError("Este correo ya está registrado.")
+        return correo
+    
+    def clean_fono(self):
+        fono = self.cleaned_data['fono']
+        if not re.match(r'^\d{9}$', str(fono)):
+            raise ValidationError("El número debe tener 9 dígitos.")
+        return fono
+
+
 
 
 class FormaPago(models.Model):
-    id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=45)
     descripcion = models.CharField(max_length=45)
     pago = models.ForeignKey('Pago', models.DO_NOTHING)
@@ -250,7 +279,6 @@ class FormaPago(models.Model):
 
 
 class Jornada(models.Model):
-    id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=45)
     horas_semanales = models.IntegerField()
 
@@ -260,7 +288,6 @@ class Jornada(models.Model):
 
 
 class Liquidacion(models.Model):
-    id = models.IntegerField(primary_key=True)
     periodo = models.DateField()
     imponible = models.IntegerField()
     no_imponible = models.IntegerField()
@@ -270,8 +297,7 @@ class Liquidacion(models.Model):
     liquido = models.IntegerField()
     fecha_cierre = models.DateField()
     estado = models.CharField(max_length=45)
-    contrato = models.ForeignKey(Contrato, models.DO_NOTHING)
-    contrato_empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    contrato_id = models.IntegerField()
 
     class Meta:
         managed = False
@@ -302,12 +328,11 @@ class Nutricional(models.Model):
 
 
 class Pago(models.Model):
-    id = models.IntegerField(primary_key=True)
     fecha_pago = models.DateField()
     monto = models.IntegerField()
     comprobante = models.CharField(max_length=45)
     estado = models.CharField(max_length=45)
-    liquidacion = models.ForeignKey(Liquidacion, models.DO_NOTHING)
+    liquidacion_id = models.IntegerField()
 
     class Meta:
         managed = False
@@ -322,13 +347,13 @@ class Productos(models.Model):
     caducidad = models.DateField()
     elaboracion = models.DateField(blank=True, null=True)
     tipo = models.CharField(max_length=100, db_comment='Corresponde al tipo de elaboraci¾n, por ejemplo propia o envasado.')
-    categorias = models.ForeignKey(Categorias, models.DO_NOTHING, db_column='Categorias_id')  # Field name made lowercase.
+    categorias_id = models.IntegerField(db_column='Categorias_id')  # Field name made lowercase.
     stock_actual = models.IntegerField(blank=True, null=True)
     stock_minimo = models.IntegerField(blank=True, null=True)
     stock_maximo = models.IntegerField(blank=True, null=True)
     presentacion = models.CharField(max_length=100, blank=True, null=True, db_comment='Unidad con la que se almacena el producto')
     formato = models.CharField(max_length=100, blank=True, null=True, db_comment='Cantidad de unidades o detalle por presentaci¾n')
-    nutricional = models.ForeignKey(Nutricional, models.DO_NOTHING, db_column='Nutricional_id')  # Field name made lowercase.
+    nutricional_id = models.IntegerField(db_column='Nutricional_id')  # Field name made lowercase.
     creado = models.DateTimeField(blank=True, null=True)
     modificado = models.DateTimeField(blank=True, null=True)
     eliminado = models.DateTimeField(blank=True, null=True)
@@ -338,17 +363,7 @@ class Productos(models.Model):
         db_table = 'productos'
 
 
-class Roles(models.Model):
-    nombre = models.CharField(max_length=100)
-    descripcion = models.CharField(max_length=200, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'roles'
-
-
 class Turno(models.Model):
-    id = models.IntegerField(primary_key=True)
     hora_entrada = models.TimeField()
     hora_salida = models.TimeField()
 
@@ -358,28 +373,12 @@ class Turno(models.Model):
 
 
 class TurnoHasJornada(models.Model):
-    turno = models.ForeignKey(Turno, models.DO_NOTHING)
-    jornada = models.ForeignKey(Jornada, models.DO_NOTHING)
+    turno_id = models.IntegerField()
+    jornada_id = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'turno_has_jornada'
-
-
-class Usuarios(models.Model):
-    nombres = models.CharField(max_length=100)
-    paterno = models.CharField(max_length=100)
-    materno = models.CharField(max_length=100, blank=True, null=True)
-    run = models.CharField(unique=True, max_length=10)
-    correo = models.CharField(max_length=100)
-    fono = models.IntegerField(blank=True, null=True)
-    clave = models.CharField(max_length=150, blank=True, null=True)
-    direccion = models.ForeignKey(Direccion, models.DO_NOTHING, db_column='Direccion_id')  # Field name made lowercase.
-    roles = models.ForeignKey(Roles, models.DO_NOTHING, db_column='Roles_id')  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'usuarios'
 
 
 class Ventas(models.Model):
@@ -392,7 +391,7 @@ class Ventas(models.Model):
     folio = models.CharField(max_length=20, blank=True, null=True)
     monto_pagado = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     vuelto = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    clientes = models.ForeignKey(Clientes, models.DO_NOTHING)
+    clientes_id = models.IntegerField()
 
     class Meta:
         managed = False

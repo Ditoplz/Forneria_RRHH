@@ -36,10 +36,9 @@
                     <td>{{ empleado.nombres }}</td>
                     <td>{{ empleado.a_paterno }}</td>
                     <td>{{ empleado.a_materno }}</td>
-                    <td>{{ empleado.rut }}</td>
+                    <td>{{ empleado.run }}</td>
                     <td>{{ empleado.correo }}</td>
                     <td>{{ empleado.fono }}</td>
-                    <td>{{ empleado.nacionalidad }}</td>
                     <td>
                         <a class="btn btn-sm btn-warning" href="{% url 'editar_empleado' empleado.id %}">Editar</a>
                         <a class="btn btn-sm btn-danger" href="{% url 'eliminar_empleado' empleado.id %}">Eliminar</a>
