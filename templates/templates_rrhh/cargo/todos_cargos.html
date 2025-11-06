@@ -6,42 +6,39 @@
 {% endblock %}
 
 {% block contenido %}
-<div class='row'>
-    <div class='col'>
-        <div class="row mb-4">
-            <div class="col">
-                <h2>Listado de Cargos</h2>
-            </div>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Listado de Cargos</h2>
+        <div>
+            <a href="{% url 'mantenedor_contratos' %}" class="btn btn-outline-dark me-2">Volver</a>
+            <a href="{% url 'crear_cargo' %}" class="btn text-white" style="background-color: #B22222;">Crear Nuevo Cargo</a>
         </div>
-        <div class="row mb-4">
-            <div class="col text-start">
-                <a href="{% url 'mantenedor_contratos' %}" class="btn btn-dark">Volver</a>
-            </div>
-            <div class="col text-end">
-                <a class="btn btn-primary" href="{% url 'crear_cargo' %}">Crear Nuevo Cargo</a>
-            </div>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="text-white" style="background: linear-gradient(90deg, #8B0000, #B22222);">
+                    <tr>
+                        <th>Cargo</th>
+                        <th>Descripción</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cargo in cargos %}
+                    <tr>
+                        <td>{{ cargo.nombre }}</td>
+                        <td>{{ cargo.descripcion }}</td>
+                        <td class="text-center">
+                            <a class="btn btn-sm btn-warning" href="{% url 'editar_cargo' cargo.id %}">Editar</a>
+                            <a class="btn btn-sm btn-danger" href="{% url 'eliminar_cargo' cargo.id %}">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-        <table class='table table-dark table-hover table-striped'>
-            <thead>
-                <tr>
-                    <th>Cargo</th>
-                    <th>Descripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for cargo in cargos %}
-                <tr>
-                    <td>{{ cargo.nombre }}</td>
-                    <td>{{ cargo.descripcion }}</td>
-                    <td>
-                        <a class="btn btn-sm btn-warning" href="{% url 'editar_cargo' cargo.id %}">Editar</a>
-                        <a class="btn btn-sm btn-danger" href="{% url 'eliminar_cargo' cargo.id %}">Eliminar</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 </div>
 {% endblock %}

@@ -24,8 +24,6 @@ def validar_run(run):
         raise ValidationError("RUN inválido: dígito verificador incorrecto.")
 
 
-
-
 class DireccionForm(forms.ModelForm):
     class Meta:
         model = Direccion
@@ -43,6 +41,39 @@ class EmpleadoForm(forms.ModelForm):
         if Empleado.objects.filter(run__iexact=run).exclude(pk=self.instance.pk).exists():
             raise ValidationError("Este RUN ya está registrado.")
         return run
+    
+    def clean_nombres(self):
+        nombres = self.cleaned_data['nombres']
+        if not re.match(r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$', nombres):
+            raise ValidationError("Solo se permiten letras y espacios.")
+        return nombres
+
+    def clean_a_paterno(self):
+        ap = self.cleaned_data['a_paterno']
+        if not re.match(r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$', ap):
+            raise ValidationError("Solo se permiten letras y espacios.")
+        return ap
+
+    def clean_a_materno(self):
+        am = self.cleaned_data['a_materno']
+        if not re.match(r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$', am):
+            raise ValidationError("Solo se permiten letras y espacios.")
+        return am
+
+    
+    def clean_correo(self):
+        correo = self.cleaned_data['correo']
+        if Empleado.objects.filter(correo=correo).exists():
+            raise ValidationError("Este correo ya está registrado.")
+        return correo
+    
+    def clean_fono(self):
+        fono = self.cleaned_data['fono']
+        if not re.match(r'^\d{9}$', str(fono)):
+            raise ValidationError("El número debe tener 9 dígitos.")
+        return fono
+
+
 
 
 
@@ -54,9 +85,33 @@ class CargoForm(forms.ModelForm):
     class Meta:
         model = Cargo
         fields = {'nombre','descripcion'}
+        
+    def clean_nombre(self):
+        nombre = self.cleaned_data['nombre']
+        if not re.match(r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$', nombre):
+            raise ValidationError("Solo se permiten letras y espacios. No se permiten números ni símbolos.")
+        return nombre
+
 
 
 class UsuarioForm(UserCreationForm):
+    
+    empleado = forms.ModelChoiceField(
+        queryset=Empleado.objects.all(),
+        required=False,
+        help_text="Vincular a un empleado (opcional)"
+    )
+    
+    rol = forms.ChoiceField(choices=[
+    ('sin rol','-------'),
+    ('admin', 'Administrador'),
+    ('empleado', 'Empleado'),
+    ('cliente', 'Cliente'),
+    ('vendedor', 'Vendedor'),
+    ('contador', 'Contador'),
+    ])
+
+
     email = forms.EmailField(
         required=True,
         error_messages={'invalid': 'Ingrese un correo con formato válido'}, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ej:Ingrese correo electrónico'}))
@@ -67,7 +122,7 @@ class UsuarioForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name','last_name','username','email','email_confirmacion','password1','password2']
+        fields = ['first_name','last_name','username','email','email_confirmacion','password1','password2','empleado','rol']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -75,11 +130,6 @@ class UsuarioForm(UserCreationForm):
             raise ValidationError("El correo electrónico ya está en uso.")
         return email
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if username and User.objects.filter(username=username).exclude(id=self.instance.id).exists():
-            raise ValidationError("El nombre de usuario ya está en uso.")
-        return username
 
     def clean(self):
         cleaned_data = super().clean()
@@ -98,6 +148,23 @@ class UsuarioForm(UserCreationForm):
             self.add_error('last_name', 'Los apellidos no pueden estar vacío')
 
         return cleaned_data
+    
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+
+        if not username:
+            self.add_error('username', "Este campo es obligatorio.")
+            return username  # importante: devolver aunque sea inválido
+
+        if not re.match(r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$', username):
+            self.add_error('username', "El nombre de usuario no debe contener números ni símbolos.")
+
+        elif User.objects.filter(username=username).exclude(id=self.instance.id).exists():
+            self.add_error('username', "El nombre de usuario ya está en uso.")
+
+        return username
+
+
     
 class UsuarioEditarForm(forms.ModelForm):    
     

@@ -9,7 +9,11 @@
 <div class="container">
     <div class="row mt-5">
         <div class="col">
-            <h2>Crear Nuevo Empleado</h2>
+            <div class="panel-seccion">
+                <h2>Crear Nuevo Empleado</h2>
+                <h5>Complete los datos personales y dirección del nuevo empleado</h5>
+            </div>
+
             <form method="post">
                 {% csrf_token %}
                 <div class="row">
@@ -48,7 +52,10 @@
 
                 <hr class="my-4">
 
-                <h4>Dirección</h4>
+                <div class="panel-seccion">
+                    <h4>Dirección</h4>
+                </div>
+
                 <div class="row">
                     {{ direccion_form.non_field_errors }}
                     <div class="col-3 mb-3">
@@ -85,7 +92,7 @@
 
                 <div class="row mt-4">
                     <div class="col text-start">
-                        <a class="btn btn-dark" href="{% url 'todos_empleados' %}">Volver</a>
+                        <a class="btn btn-volver" href="{% url 'todos_empleados' %}">Volver</a>
                     </div>
                     <div class="col text-end">
                         <button type="submit" class="btn btn-primary">Crear Empleado</button>

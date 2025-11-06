@@ -2,7 +2,6 @@ import re
 from django.db import models
 from django.forms import ValidationError
 
-
 class Alertas(models.Model):
     tipo_alerta = models.CharField(max_length=8)
     mensaje = models.CharField(max_length=255)
@@ -52,14 +51,26 @@ class AuthUser(models.Model):
     username = models.CharField(unique=True, max_length=150)
     first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
-    email = models.CharField(unique=True, max_length=254)
+    email = models.EmailField(unique=True, max_length=254)
     is_staff = models.IntegerField(blank=True, null=True)
     is_active = models.IntegerField(blank=True, null=True)
     date_joined = models.DateTimeField(blank=True, null=True)
+    rol = models.CharField(max_length=50, null=True, blank=True, choices=[
+        ('admin', 'Administrador'),
+        ('empleado', 'Empleado'),
+        ('cliente', 'Cliente'),
+        ('vendedor', 'Vendedor'),
+        ('contador', 'Contador'),
+    ])
+    id_empleado = models.OneToOneField('Empleado', db_column='id_empleado', on_delete=models.SET_NULL, null=True, blank=True, related_name='usuario_asociado')
 
     class Meta:
         managed = False
         db_table = 'auth_user'
+
+    
+    def __str__(self):
+        return f"{self.username} ({self.rol})"
 
 
 class AuthUserGroups(models.Model):
@@ -160,33 +171,31 @@ class DetalleVenta(models.Model):
     class Meta:
         managed = False
         db_table = 'detalle_venta'
-
-
-REGIONES = [
-    ('XV - Arica y Parinacota', 'XV - Arica y Parinacota'),
-    ('I - Tarapacá', 'I - Tarapacá'),
-    ('II - Antofagasta', 'II - Antofagasta'),
-    ('III - Atacama', 'III - Atacama'),
-    ('IV - Coquimbo', 'IV - Coquimbo'),
-    ('V - Valparaíso', 'V - Valparaíso'),
-    ('RM - Metropolitana de Santiago', 'RM - Metropolitana de Santiago'),
-    ('VI - O’Higgins', 'VI - O’Higgins'),
-    ('VII - Maule', 'VII - Maule'),
-    ('VIII - Biobío', 'VIII - Biobío'),
-    ('IX - La Araucanía', 'IX - La Araucanía'),
-    ('X - Los Lagos', 'X - Los Lagos'),
-    ('XI - Aysén', 'XI - Aysén'),
-    ('XII - Magallanes', 'XII - Magallanes'),
-    ('XIV - Los Ríos', 'XIV - Los Ríos'),
-    ('XIII - Ñuble', 'XIII - Ñuble'),
-]
+        
 
 class Direccion(models.Model):
     calle = models.CharField(max_length=100)
     numero = models.CharField(max_length=10)
     depto = models.CharField(max_length=10, blank=True, null=True)
     comuna = models.CharField(max_length=100)
-    region = models.CharField(max_length=100, choices=REGIONES)
+    region = models.CharField(max_length=50, choices=[
+        ('XV - Arica y Parinacota', 'XV - Arica y Parinacota'),
+        ('I - Tarapacá', 'I - Tarapacá'),
+        ('II - Antofagasta', 'II - Antofagasta'),
+        ('III - Atacama', 'III - Atacama'),
+        ('IV - Coquimbo', 'IV - Coquimbo'),
+        ('V - Valparaíso', 'V - Valparaíso'),
+        ('RM - Metropolitana de Santiago', 'RM - Metropolitana de Santiago'),
+        ('VI - O’Higgins', 'VI - O’Higgins'),
+        ('VII - Maule', 'VII - Maule'),
+        ('VIII - Biobío', 'VIII - Biobío'),
+        ('IX - La Araucanía', 'IX - La Araucanía'),
+        ('X - Los Lagos', 'X - Los Lagos'),
+        ('XI - Aysén', 'XI - Aysén'),
+        ('XII - Magallanes', 'XII - Magallanes'),
+        ('XIV - Los Ríos', 'XIV - Los Ríos'),
+        ('XIII - Ñuble', 'XIII - Ñuble'),
+    ])
     codigo_postal = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -248,22 +257,15 @@ class Empleado(models.Model):
     fono = models.CharField(unique=True, max_length=100)
     id_direccion = models.IntegerField(unique=True, null=False)
     #direccion= models.ForeignKey('Direccion',to_field='id',db_column='id_direccion',on_delete=models.CASCADE)
-
+    id_usuario = models.OneToOneField('AuthUser', db_column='id_usuario', on_delete=models.SET_NULL, null=True, blank=True, related_name='empleado_asociado')
+    
     class Meta:
         managed = False
         db_table = 'empleado'
-        
-    def clean_correo(self):
-        correo = self.cleaned_data['correo']
-        if Empleado.objects.filter(correo=correo).exists():
-            raise ValidationError("Este correo ya está registrado.")
-        return correo
     
-    def clean_fono(self):
-        fono = self.cleaned_data['fono']
-        if not re.match(r'^\d{9}$', str(fono)):
-            raise ValidationError("El número debe tener 9 dígitos.")
-        return fono
+    def __str__(self):
+        return f"{self.nombres} {self.a_paterno} {self.a_materno} ({self.run})"
+    
 
 
 

@@ -6,24 +6,26 @@
 {% endblock %}
 
 {% block contenido %}
-<div class='row'>
-    <div class='col-10 offset-1'>
-        <h3>Eliminar Empleado</h3>
-        <div class='alert alert-danger h5'>
-            ¿Está seguro que desea eliminar al empleado:
-            <strong>{{ empleado.nombres }} {{ empleado.a_paterno }} {{ empleado.a_materno }}</strong>?
-        </div>
-        <form method="post">
-            {% csrf_token %}
-            <div class='row'>
-                <div class='col'>
-                    <a class='btn btn-dark' href="{% url 'todos_empleados' %}">Cancelar</a>
-                </div>
-                <div class='col'>
-                    <button class='btn btn-danger' type="submit">Eliminar Empleado</button>
-                </div>
-            </div>
-        </form>
+<div class="container mt-5">
+    <div class="panel-seccion">
+        <h1>Eliminar Empleado</h1>
     </div>
+
+    <div class="alert alert-danger h5">
+        ¿Está seguro que desea eliminar al empleado:
+        <strong>{{ empleado.nombres }} {{ empleado.a_paterno }} {{ empleado.a_materno }}</strong>?
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col text-start">
+                <a class="btn btn-volver" href="{% url 'todos_empleados' %}">Cancelar</a>
+            </div>
+            <div class="col text-end">
+                <button class="btn btn-danger" type="submit">Eliminar Empleado</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

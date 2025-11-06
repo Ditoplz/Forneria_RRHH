@@ -6,33 +6,36 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="row mt-5">
-    <div class="col-10 offset-1">
-        <h2>Editar Cargo:</h2>
-        <form method="POST" action="{% url 'editar_cargo' cargo.id %}">
-            {% csrf_token %}
-            <div class="row">
-                {{ form.non_field_errors }}
-                <div class="col-3 mb-3">
-                    <label for="id_nombre">Nombre:</label>
-                    {{ form.nombre }}
-                    {{ form.nombre.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    <label for="id_descripcion">Descripcion:</label>
-                    {{ form.descripcion }}
-                    {{ form.descripcion.errors }}
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <a class="btn btn-dark" href="{% url 'todos_cargos' %}">Volver</a>
-                    </div>
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+<div class="container mt-5">
+    <div class="panel-seccion">
+        <h1>Editar Cargo</h1>
+        <h5>Modifique los campos necesarios y guarde los cambios</h5>
     </div>
+
+    <form method="POST" action="{% url 'editar_cargo' cargo.id %}">
+        {% csrf_token %}
+        <div class="row">
+            {{ form.non_field_errors }}
+            <div class="col-3 mb-3">
+                <label for="id_nombre">Nombre:</label>
+                {{ form.nombre }}
+                {{ form.nombre.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                <label for="id_descripcion">Descripción:</label>
+                {{ form.descripcion }}
+                {{ form.descripcion.errors }}
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col text-start">
+                <a class="btn btn-volver" href="{% url 'todos_cargos' %}">Volver</a>
+            </div>
+            <div class="col text-end">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

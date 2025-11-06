@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
-from django.contrib.auth.models import User
+from django.contrib import messages
 from rrhh.models import Empleado, Cargo, AuthUser, Direccion
 from .forms import EmpleadoForm, CargoForm, UsuarioForm, UsuarioEditarForm, DireccionForm
 
@@ -41,7 +40,10 @@ def crear_empleado(request):
             empleado = empleado_form.save(commit=False)
             empleado.id_direccion = direccion.id
             empleado.save()
-            return redirect('todos_empleados')
+            messages.success(request, "Empleado creado correctamente.")
+            return redirect('crear_empleado')
+        else:
+            messages.error(request, "Corrige los errores del formulario.")
     else:
         empleado_form = EmpleadoForm()
         direccion_form = DireccionForm()
@@ -51,8 +53,10 @@ def crear_empleado(request):
     })
 
 
+
 def todos_empleados(request):
     empleados=Empleado.objects.all()
+    usuarios= AuthUser.objects.all
     
     data={
         'empleados':empleados
@@ -157,7 +161,12 @@ def crear_usuario(request):
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.is_active = True
+            usuario.rol = form.cleaned_data.get('rol')
             usuario.save()
+            empleado = form.cleaned_data.get('empleado')
+            if empleado:
+                empleado.usuario = usuario
+                empleado.save()
             return redirect('todos_usuarios')
         
     else:

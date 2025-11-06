@@ -6,40 +6,25 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="row">
-    <div class="row align-items-center mt-5 mb-4">
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
         <div class="col-9">
-            <div class="text-dark h1">Mantenedor de Usuarios</div>
-            <div class="text-muted h5">Bienvenido {{ user.first_name }} {{ user.last_name }}</div>
+            <h1 class="text-dark fw-bold">Mantenedor de Usuarios</h1>
+            <h5 class="text-muted">Bienvenido {{ user.first_name }} {{ user.last_name }}</h5>
         </div>
         <div class="col-3 text-end">
-            <a href="{% url 'gestor_rrhh' %}" class="btn btn-dark">Volver</a>
+            <a href="{% url 'gestor_rrhh' %}" class="btn btn-wine">Volver</a>
         </div>
     </div>
-    <div class="col mt-5">
-        <div class="card shadow-lg" style="width: 18rem;">
-            <img src="{% static 'images/contrato.png' %}" class="card-img-top" alt="logo la forneria">
-            <div class="card-body">
-                <h5 class="card-title">Contratos y Cargos</h5>
-                <a class="btn btn-success" href="#">Ingresar</a>
-            </div>
-        </div>
-    </div>
-    <div class="col mt-5">
-        <div class="card shadow-lg" style="width: 18rem;">
-            <img src="{% static 'images/empleados.jpg' %}" class="card-img-top" alt="logo la forneria">
-            <div class="card-body">
-                <h5 class="card-title">Empleados y Liquidaciones</h5>
-                <a class="btn btn-success" href="#">Ingresar</a>
-            </div>
-        </div>
-    </div>
-    <div class="col mt-5">
-        <div class="card shadow-lg" style="width: 18rem;">
-            <img src="{% static 'images/usuarios.png' %}" class="card-img-top" alt="logo la forneria">
-            <div class="card-body">
-                <h5 class="card-title">Usuarios y Cuentas</h5>
-                <a class="btn btn-success" href="{% url 'todos_usuarios' %}">Ingresar</a>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-3">
+            <div class="card shadow card-hover">
+                <img src="{% static 'images/usuarios.png' %}" class="card-img-top" alt="Usuarios">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Usuarios y Cuentas</h5>
+                    <a class="btn btn-wine" href="{% url 'todos_usuarios' %}">Ingresar</a>
+                </div>
             </div>
         </div>
     </div>

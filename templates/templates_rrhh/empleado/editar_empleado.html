@@ -6,96 +6,101 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="row mt-5">
-    <div class="col-10 offset-1">
-        <h2>Editar Empleado:</h2>
-        <form method="POST" action="{% url 'editar_empleado' empleado.id %}">
-            {% csrf_token %}
-            <div class="row">
-                {{ empleado_form.non_field_errors }}
-                <div class="col-3 mb-3">
-                    <label for="id_nombres">Nombres:</label>
-                    {{ empleado_form.nombres }}
-                    {{ empleado_form.nombres.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    <label for="id_apellido">Apellido Paterno:</label>
-                    {{ empleado_form.a_paterno }}
-                    {{ empleado_form.a_paterno.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    <label for="id_apellido_materno">Apellido Materno:</label>
-                    {{ empleado_form.a_materno }}
-                    {{ empleado_form.a_materno.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ empleado_form.run.label_tag }} 
-                    {{ empleado_form.run }}
-                    {{ empleado_form.run.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ empleado_form.correo.label_tag }} 
-                    {{ empleado_form.correo }}
-                    {{ empleado_form.correo.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ empleado_form.fono.label_tag }} 
-                    {{ empleado_form.fono }}
-                    {{ empleado_form.fono.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ empleado_form.clave.label_tag }} 
-                    {{ empleado_form.clave }}
-                    {{ empleado_form.clave.errors }}
-                </div>
-            </div>
-
-            <hr class="my-4">
-
-            <h4>Dirección</h4>
-            <div class="row">
-                {{ direccion_form.non_field_errors }}
-                <div class="col-3 mb-3">
-                    {{ direccion_form.calle.label_tag }}
-                    {{ direccion_form.calle }}
-                    {{ direccion_form.calle.errors }}
-                </div>
-                <div class="col-2 mb-3">
-                    {{ direccion_form.numero.label_tag }}
-                    {{ direccion_form.numero }}
-                    {{ direccion_form.numero.errors }}
-                </div>
-                <div class="col-2 mb-3">
-                    {{ direccion_form.depto.label_tag }}
-                    {{ direccion_form.depto }}
-                    {{ direccion_form.depto.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ direccion_form.comuna.label_tag }}
-                    {{ direccion_form.comuna }}
-                    {{ direccion_form.comuna.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ direccion_form.region.label_tag }}
-                    {{ direccion_form.region }}
-                    {{ direccion_form.region.errors }}
-                </div>
-                <div class="col-3 mb-3">
-                    {{ direccion_form.codigo_postal.label_tag }}
-                    {{ direccion_form.codigo_postal }}
-                    {{ direccion_form.codigo_postal.errors }}
-                </div>
-            </div>
-
-            <div class="row mt-4">
-                <div class="col text-start">
-                    <a class="btn btn-dark" href="{% url 'todos_empleados' %}">Volver</a>
-                </div>
-                <div class="col text-end">
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                </div>
-            </div>
-        </form>
+<div class="container mt-5">
+    <div class="panel-seccion">
+        <h1>Editar Empleado</h1>
+        <h5>Modifique la información personal o de dirección del empleado</h5>
     </div>
+
+    <form method="POST" action="{% url 'editar_empleado' empleado.id %}">
+        {% csrf_token %}
+        <div class="row">
+            {{ empleado_form.non_field_errors }}
+            <div class="col-3 mb-3">
+                <label for="id_nombres">Nombres:</label>
+                {{ empleado_form.nombres }}
+                {{ empleado_form.nombres.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                <label>Apellido Paterno:</label>
+                {{ empleado_form.a_paterno }}
+                {{ empleado_form.a_paterno.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                <label>Apellido Materno:</label>
+                {{ empleado_form.a_materno }}
+                {{ empleado_form.a_materno.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ empleado_form.run.label_tag }}
+                {{ empleado_form.run }}
+                {{ empleado_form.run.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ empleado_form.correo.label_tag }}
+                {{ empleado_form.correo }}
+                {{ empleado_form.correo.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ empleado_form.fono.label_tag }}
+                {{ empleado_form.fono }}
+                {{ empleado_form.fono.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ empleado_form.clave.label_tag }}
+                {{ empleado_form.clave }}
+                {{ empleado_form.clave.errors }}
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="panel-seccion">
+            <h4>Dirección</h4>
+        </div>
+
+        <div class="row">
+            {{ direccion_form.non_field_errors }}
+            <div class="col-3 mb-3">
+                {{ direccion_form.calle.label_tag }}
+                {{ direccion_form.calle }}
+                {{ direccion_form.calle.errors }}
+            </div>
+            <div class="col-2 mb-3">
+                {{ direccion_form.numero.label_tag }}
+                {{ direccion_form.numero }}
+                {{ direccion_form.numero.errors }}
+            </div>
+            <div class="col-2 mb-3">
+                {{ direccion_form.depto.label_tag }}
+                {{ direccion_form.depto }}
+                {{ direccion_form.depto.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ direccion_form.comuna.label_tag }}
+                {{ direccion_form.comuna }}
+                {{ direccion_form.comuna.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ direccion_form.region.label_tag }}
+                {{ direccion_form.region }}
+                {{ direccion_form.region.errors }}
+            </div>
+            <div class="col-3 mb-3">
+                {{ direccion_form.codigo_postal.label_tag }}
+                {{ direccion_form.codigo_postal }}
+                {{ direccion_form.codigo_postal.errors }}
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col text-start">
+                <a class="btn btn-volver" href="{% url 'todos_empleados' %}">Volver</a>
+            </div>
+            <div class="col text-end">
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}
