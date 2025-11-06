@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 import re
+from django.contrib.auth.hashers import make_password
+
 
 def validar_run(run):
     run = run.upper().strip()
@@ -94,14 +96,7 @@ class CargoForm(forms.ModelForm):
 
 
 
-class UsuarioForm(UserCreationForm):
-    
-    empleado = forms.ModelChoiceField(
-        queryset=Empleado.objects.all(),
-        required=False,
-        help_text="Vincular a un empleado (opcional)"
-    )
-    
+class UsuarioForm(forms.ModelForm):
     rol = forms.ChoiceField(choices=[
     ('sin rol','-------'),
     ('admin', 'Administrador'),
@@ -110,6 +105,9 @@ class UsuarioForm(UserCreationForm):
     ('vendedor', 'Vendedor'),
     ('contador', 'Contador'),
     ])
+    
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput)
 
 
     email = forms.EmailField(
@@ -121,12 +119,12 @@ class UsuarioForm(UserCreationForm):
         error_messages={'invalid': 'Ingrese un correo con formato válido'}, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ej:Confirme correo electrónico'}))
 
     class Meta:
-        model = User
-        fields = ['first_name','last_name','username','email','email_confirmacion','password1','password2','empleado','rol']
+        model = AuthUser
+        fields = ['first_name','last_name','username','email','email_confirmacion','id_empleado','rol']
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if email and User.objects.filter(email=email).exclude(id=self.instance.id).exists():
+        if email and AuthUser.objects.filter(email=email).exclude(id=self.instance.id).exists():
             raise ValidationError("El correo electrónico ya está en uso.")
         return email
 
@@ -151,24 +149,47 @@ class UsuarioForm(UserCreationForm):
     
     def clean_username(self):
         username = self.cleaned_data.get('username')
-
         if not username:
             self.add_error('username', "Este campo es obligatorio.")
-            return username  # importante: devolver aunque sea inválido
-
+            return username 
         if not re.match(r'^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$', username):
             self.add_error('username', "El nombre de usuario no debe contener números ni símbolos.")
-
-        elif User.objects.filter(username=username).exclude(id=self.instance.id).exists():
+        elif AuthUser.objects.filter(username=username).exclude(id=self.instance.id).exists():
             self.add_error('username', "El nombre de usuario ya está en uso.")
 
         return username
+    
+    
+    def save(self, commit=True):
+        usuario = super().save(commit=False)
+        password = self.cleaned_data.get('password1')
+        if password:
+            usuario.password = make_password(password)
+        if commit:
+            usuario.save()
+        return usuario
+
+
 
 
     
-class UsuarioEditarForm(forms.ModelForm):    
-    
+class UsuarioEditarForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name','last_name','username','email']
-        
+        fields = ['first_name', 'last_name', 'username', 'email']
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name', '').strip()
+        if not first_name:
+            raise forms.ValidationError('El nombre no puede estar vacío')
+        if not re.fullmatch(r'[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+', first_name):
+            raise forms.ValidationError('El nombre no debe contener números ni símbolos')
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name', '').strip()
+        if not last_name:
+            raise forms.ValidationError('Los apellidos no pueden estar vacíos')
+        if not re.fullmatch(r'[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+', last_name):
+            raise forms.ValidationError('Los apellidos no deben contener números ni símbolos')
+        return last_name

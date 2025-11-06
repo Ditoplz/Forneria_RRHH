@@ -49,8 +49,8 @@ class AuthUser(models.Model):
     last_login = models.DateTimeField(blank=True, null=True)
     is_superuser = models.IntegerField(blank=True, null=True)
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150, verbose_name='Nombres')
+    last_name = models.CharField(max_length=150, verbose_name='Apellido(s)')
     email = models.EmailField(unique=True, max_length=254)
     is_staff = models.IntegerField(blank=True, null=True)
     is_active = models.IntegerField(blank=True, null=True)
@@ -62,7 +62,7 @@ class AuthUser(models.Model):
         ('vendedor', 'Vendedor'),
         ('contador', 'Contador'),
     ])
-    id_empleado = models.OneToOneField('Empleado', db_column='id_empleado', on_delete=models.SET_NULL, null=True, blank=True, related_name='usuario_asociado')
+    id_empleado = models.OneToOneField('Empleado',verbose_name='Empleado', db_column='id_empleado', on_delete=models.SET_NULL, null=True, blank=True, related_name='usuario_asociado')
 
     class Meta:
         managed = False

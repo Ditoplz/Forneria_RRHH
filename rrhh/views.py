@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
 from rrhh.models import Empleado, Cargo, AuthUser, Direccion
 from .forms import EmpleadoForm, CargoForm, UsuarioForm, UsuarioEditarForm, DireccionForm
 
@@ -56,7 +57,7 @@ def crear_empleado(request):
 
 def todos_empleados(request):
     empleados=Empleado.objects.all()
-    usuarios= AuthUser.objects.all
+    usuarios= AuthUser
     
     data={
         'empleados':empleados
@@ -161,16 +162,19 @@ def crear_usuario(request):
         if form.is_valid():
             usuario = form.save(commit=False)
             usuario.is_active = True
-            usuario.rol = form.cleaned_data.get('rol')
+            usuario.is_staff = False
+            usuario.is_superuser = False
+            usuario.date_joined = timezone.now()
             usuario.save()
-            empleado = form.cleaned_data.get('empleado')
+            empleado = form.cleaned_data.get('id_empleado')
             if empleado:
-                empleado.usuario = usuario
+                empleado.id_usuario = usuario
                 empleado.save()
+
             return redirect('todos_usuarios')
-        
     else:
         form = UsuarioForm()
+
     return render(request, 'templates_rrhh/usuario/crear_usuario.html', {'form': form})
 
 @login_required
