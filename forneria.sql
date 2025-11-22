@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 18-11-2025 a las 03:08:23
+-- Tiempo de generación: 22-11-2025 a las 01:00:24
 -- Versión del servidor: 9.1.0
 -- Versión de PHP: 8.3.14
 
@@ -256,18 +256,20 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `date_joined` datetime(6) NOT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `auth_user`
 --
 
-INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`) VALUES
-(9, 'pbkdf2_sha256$1000000$8Oqtpn857FWlVjJzjx8eTy$HBZJRN5L176PCtasG0ZPJZWh2eZ+nl6Y+uafGQ1I9qc=', NULL, 0, '13231', '123123', '13231', 'ct692212@gmail.com', 0, 1, '2025-11-05 06:05:48.579651'),
-(7, 'pbkdf2_sha256$1000000$XY9fj3qPiS8njlqs3Qsch4$jZVX9RnGHmh+T00l4NzFf5orMo0o9PDSaSijpX5MEtM=', NULL, 0, 'PruebaE', 'Fue', 'Exitosa', 'prueba@dos.cl', 0, 1, '2025-11-03 17:16:05.900293'),
-(8, 'pbkdf2_sha256$1000000$3so01Xd6QVZwkGtexmUUKa$Abz9N8FXjyf86G/588X9bEDqe6Jasu+ycRz8376CK5k=', '2025-11-17 21:53:26.565837', 0, 'Dito', 'Dito', 'Plz', 'dito@dominio.cl', 0, 1, '2025-11-03 17:43:27.541306');
+INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`, `visible`) VALUES
+(7, 'pbkdf2_sha256$1000000$XY9fj3qPiS8njlqs3Qsch4$jZVX9RnGHmh+T00l4NzFf5orMo0o9PDSaSijpX5MEtM=', NULL, 0, 'PruebaE', 'Fue', 'Exitosa', 'prueba@dos.cl', 0, 1, '2025-11-03 17:16:05.900293', 1),
+(8, 'pbkdf2_sha256$1000000$3so01Xd6QVZwkGtexmUUKa$Abz9N8FXjyf86G/588X9bEDqe6Jasu+ycRz8376CK5k=', '2025-11-22 00:09:00.125059', 1, 'Dito', 'Dito', 'Plz', 'dito@dominio.cl', 0, 1, '2025-11-03 17:43:27.541306', 1),
+(11, 'pbkdf2_sha256$1000000$NmjOMZL5u4Q9IVIBFcmYO7$amBLi2vK0JbIJFTsyNMxwpwIPYk8GdIecDQW553XyHs=', NULL, 0, 'Pepino', 'Pepe Carlos', 'Cazuela Pollo', 'miau@miau.cl', 0, 0, '2025-11-21 23:41:47.005190', 0),
+(12, 'pbkdf2_sha256$1000000$7AU8L2WrPoXQ45sfLc1Jsy$0EaskGCmRP4KEW/99Jz4ynA0e0XNim2KAQvLL5QBe5Y=', NULL, 0, 'Testi', 'Testeo Testin', 'Fuentes García', 'testeo@dominio.com', 0, 1, '2025-11-22 00:09:30.639569', 1);
 
 -- --------------------------------------------------------
 
@@ -314,17 +316,19 @@ CREATE TABLE IF NOT EXISTS `cargo` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `descripcion` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `cargo`
 --
 
-INSERT INTO `cargo` (`id`, `nombre`, `descripcion`) VALUES
-(2, 'Prueba1', 'Esta es la primera prueba para cargojhg'),
-(3, 'Prueba2', 'Esta es para probar nombre rep'),
-(5, 'cargo1', 'prueba de caargooo1223.$#');
+INSERT INTO `cargo` (`id`, `nombre`, `descripcion`, `visible`) VALUES
+(2, 'Prueba1', 'Esta es la primera prueba para cargojhg', 1),
+(3, 'Prueba2', 'Esta es para probar nombre rep', 1),
+(5, 'cargo1', 'prueba de caargooo1223.$#', 1),
+(6, 'Cargo Final', 'Este cargo demuestra que corre', 1);
 
 -- --------------------------------------------------------
 
@@ -372,6 +376,7 @@ CREATE TABLE IF NOT EXISTS `contrato` (
   `departamento_id` int NOT NULL,
   `turno_has_jornada_id` int NOT NULL,
   `sueldo_base` int NOT NULL DEFAULT '0',
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_contrato_empleado1_idx` (`empleado_id`),
   KEY `fk_contrato_cargo1_idx` (`cargo_id`),
@@ -383,13 +388,13 @@ CREATE TABLE IF NOT EXISTS `contrato` (
 -- Volcado de datos para la tabla `contrato`
 --
 
-INSERT INTO `contrato` (`id`, `detalle_contrato`, `fecha_inicio`, `fecha_fin`, `empleado_id`, `cargo_id`, `departamento_id`, `turno_has_jornada_id`, `sueldo_base`) VALUES
-(4, 'reponedor', '2025-11-04', '2026-01-29', 4, 3, 2, 4, 600000),
-(5, 'reponedor', '2025-10-08', '2026-03-18', 8, 5, 4, 5, 450000),
-(6, 'cajero', '2025-10-16', '2026-06-25', 1, 2, 1, 1, 350000),
-(7, 'cajero', '2025-10-16', '2026-06-25', 1, 2, 1, 1, 350000),
-(8, 'cajero', '2025-09-04', '2026-01-23', 5, 5, 3, 4, 500000),
-(9, 'director', '2025-10-30', '2025-12-05', 9, 3, 1, 3, 500000);
+INSERT INTO `contrato` (`id`, `detalle_contrato`, `fecha_inicio`, `fecha_fin`, `empleado_id`, `cargo_id`, `departamento_id`, `turno_has_jornada_id`, `sueldo_base`, `visible`) VALUES
+(4, 'reponedor', '2025-11-04', '2026-01-29', 4, 3, 2, 4, 600000, 1),
+(5, 'reponedor', '2025-10-08', '2026-03-18', 8, 5, 4, 5, 450000, 1),
+(6, 'cajero', '2025-10-16', '2026-06-25', 1, 2, 1, 1, 350000, 1),
+(7, 'cajero', '2025-10-16', '2026-06-25', 1, 2, 1, 1, 350000, 1),
+(8, 'cajero', '2025-09-04', '2026-01-23', 5, 5, 3, 4, 500000, 1),
+(9, 'director', '2025-10-30', '2025-12-05', 9, 3, 1, 3, 500000, 1);
 
 -- --------------------------------------------------------
 
@@ -627,7 +632,9 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 ('xa1lguileam721p0s1szhppe34lnv042', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vGWId:8X33BCp95mfng8M538I54Ggdl4S9Fu9PfqJCpq1TfWE', '2025-11-19 05:43:15.704367'),
 ('54hzklg5xldpzth9dme6u73t7f6nh84d', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vKcdW:z-Gd3pbBhddj6EPhPcknJnidXIBdZVNz_vc_hCVuLY0', '2025-11-30 13:17:46.580590'),
 ('vsnohs2p9j5s9uhciw5eoq6pdelwyzch', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vL71S:GcKX5vkFMrRHhHufja9PREZLBcTc91r08RHk14lZrmo', '2025-12-01 21:44:30.083657'),
-('md0utqg8sdw7igs7e7myog1hg8d1ib76', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vL7A6:0PbZ3Qrf6GUt3rCbM57cRYGHayj27Oe3ortXDEQhLxI', '2025-12-01 21:53:26.568971');
+('md0utqg8sdw7igs7e7myog1hg8d1ib76', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vL7A6:0PbZ3Qrf6GUt3rCbM57cRYGHayj27Oe3ortXDEQhLxI', '2025-12-01 21:53:26.568971'),
+('rq472rnphh88vi7sjg2lpsgr6oaz0gn6', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vMWoG:_BGMqMJQPWMqGVqrDoB7D2RZetBVAC7hOz7YwxdtW1k', '2025-12-05 19:28:44.943719'),
+('pqiw6aizxmgfifjcz9gt68nje9uxnina', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vMbBU:yfzCM9qp6xy7qnzWdiJy1kk6M7ZA2IvjjpO87WwJolg', '2025-12-06 00:09:00.130215');
 
 -- --------------------------------------------------------
 
@@ -645,25 +652,28 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   `correo` varchar(100) NOT NULL,
   `fono` varchar(100) NOT NULL,
   `id_direccion` int NOT NULL,
+  `user_id` int DEFAULT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `run_UNIQUE` (`run`),
   UNIQUE KEY `fono_UNIQUE` (`fono`),
-  UNIQUE KEY `fk_id_direccion` (`id_direccion`) USING BTREE
+  UNIQUE KEY `fk_id_direccion` (`id_direccion`) USING BTREE,
+  UNIQUE KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `empleado`
 --
 
-INSERT INTO `empleado` (`id`, `nombres`, `A_paterno`, `A_materno`, `run`, `correo`, `fono`, `id_direccion`) VALUES
-(1, 'Testeo Testin', 'Fuentes', 'García', '20767882-1', 'testeo@dominio.com', '12345678', 0),
-(3, 'Pepe Carlos', 'Cazuela', 'Pollo', 'sdadas', 'miau@miau.cl', 'adasda', 2),
-(4, 'Pepe Carlos', 'Cazuela', 'Pollo', 'a', 'miau@miau.cl', 'a', 3),
-(5, 'Prueba', 'Uno', 'One', 'asdasda', 'miau@miau.com', 'asdsada', 4),
-(6, 'asd', 'asd', 'sad', 'asd', 'asd@sa.com', 'asd', 5),
-(7, 'asd', 'ads', 'asd', '123123123', 'asd@faadsd.cl', 'asdasd', 6),
-(8, 'editado', 'asd', 'asd', '1111111-4', 'asd@sdfs.cl', 'sdas', 7),
-(9, '123', '2123', '31232', '21990927-6', 'qewqweasd@asd.com', '123124124', 8);
+INSERT INTO `empleado` (`id`, `nombres`, `A_paterno`, `A_materno`, `run`, `correo`, `fono`, `id_direccion`, `user_id`, `visible`) VALUES
+(1, 'Testeo Testin', 'Fuentes', 'García', '20767882-1', 'testeo@dominio.com', '12345678', 0, 12, 1),
+(3, 'Pepe Carlos', 'Cazuela', 'Pollo', 'sdadas', 'miau@miau.cl', 'adasda', 2, 11, 1),
+(4, 'Pepe Carlos', 'Cazuela', 'Pollo', 'a', 'miau@miau.cl', 'a', 3, NULL, 1),
+(5, 'Prueba', 'Uno', 'One', 'asdasda', 'miau@miau.com', 'asdsada', 4, NULL, 1),
+(6, 'asd', 'asd', 'sad', 'asd', 'asd@sa.com', 'asd', 5, NULL, 1),
+(7, 'asd', 'ads', 'asd', '123123123', 'asd@faadsd.cl', 'asdasd', 6, NULL, 1),
+(8, 'editado', 'asd', 'asd', '1111111-4', 'asd@sdfs.cl', 'sdas', 7, NULL, 1),
+(9, '123', '2123', '31232', '21990927-6', 'qewqweasd@asd.com', '123124124', 8, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -724,6 +734,7 @@ CREATE TABLE IF NOT EXISTS `liquidacion` (
   `estado` varchar(45) NOT NULL,
   `contrato_id` int NOT NULL,
   `empleado_id` int DEFAULT NULL,
+  `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_liquidacion_contrato1_idx` (`contrato_id`),
   KEY `liquidacion_empleado_fk` (`empleado_id`)
@@ -733,9 +744,9 @@ CREATE TABLE IF NOT EXISTS `liquidacion` (
 -- Volcado de datos para la tabla `liquidacion`
 --
 
-INSERT INTO `liquidacion` (`id`, `periodo`, `imponible`, `no_imponible`, `tributable`, `descuentos`, `bruto`, `liquido`, `fecha_cierre`, `estado`, `contrato_id`, `empleado_id`) VALUES
-(2, '2025-10-30', 325323, 23526, 23523, 25352, 5235299, 23523, '2025-11-28', 'activo', 6, 1),
-(3, '2025-10-12', 53453, 34534, 34534, 34534, 12312, 12315, '2025-11-12', 'activo', 6, 1);
+INSERT INTO `liquidacion` (`id`, `periodo`, `imponible`, `no_imponible`, `tributable`, `descuentos`, `bruto`, `liquido`, `fecha_cierre`, `estado`, `contrato_id`, `empleado_id`, `visible`) VALUES
+(2, '2025-10-30', 325323, 23526, 23523, 25352, 5235299, 23523, '2025-11-28', 'activo', 6, 1, 1),
+(3, '2025-10-12', 53453, 34534, 34534, 34534, 12312, 12315, '2025-11-12', 'activo', 6, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -931,6 +942,12 @@ ALTER TABLE `cuenta_bancaria`
 ALTER TABLE `detalle_venta`
   ADD CONSTRAINT `fk_detalle_venta_productos1` FOREIGN KEY (`productos_id`) REFERENCES `productos` (`id`),
   ADD CONSTRAINT `fk_detalle_venta_ventas1` FOREIGN KEY (`ventas_id`) REFERENCES `ventas` (`id`);
+
+--
+-- Filtros para la tabla `empleado`
+--
+ALTER TABLE `empleado`
+  ADD CONSTRAINT `fk_empleado_user` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE SET NULL;
 
 --
 -- Filtros para la tabla `forma_pago`
