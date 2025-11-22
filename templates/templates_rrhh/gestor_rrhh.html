@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+        <h1 style="color: #7a0000; font-weight: bold;">
+            Gestor de Recursos Humanos
+        </h1>
+
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary mt-3 px-4">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="d-flex justify-content-center gap-5 flex-wrap">
+
+        <div class="card shadow-lg text-center" style="width: 18rem;">
+            <img src="{% static 'images/contrato.png' %}"
+                 class="card-img-top mx-auto d-block"
+                 alt="Contratos"
+                 style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Contratos y Cargos</h5>
+                <a class="btn btn-success px-4" href="{% url 'mantenedor_contratos' %}">
+                    Ingresar
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-lg text-center" style="width: 18rem;">
+            <img src="{% static 'images/empleados.jpg' %}"
+                 class="card-img-top mx-auto d-block"
+                 alt="Empleados"
+                 style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Empleados y Liquidaciones</h5>
+                <a class="btn btn-success px-4" href="{% url 'mantenedor_empleados' %}">
+                    Ingresar
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-lg text-center" style="width: 18rem;">
+            <img src="{% static 'images/usuarios.png' %}"
+                 class="card-img-top mx-auto d-block"
+                 alt="Usuarios"
+                 style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Usuarios y Cuentas</h5>
+                <a class="btn btn-success px-4" href="{% url 'mantenedor_usuarios' %}">
+                    Ingresar
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

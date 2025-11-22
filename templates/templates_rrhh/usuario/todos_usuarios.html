@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold text-dark mb-0">Listado de Usuarios</h2>
+        <div>
+            <a href="{% url 'mantenedor_usuarios' %}" class="btn btn-outline-dark me-2"><i class="bi bi-arrow-left-circle-fill me-1"></i>Volver</a>
+            <a href="{% url 'crear_usuario' %}" class="btn text-white" style="background-color: #B22222;"><i class="bi bi-plus-circle-fill me-1"></i>Crear Nuevo Usuario</a>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="card card-body mb-4">
+        <div class="row align-items-end">
+            <div class="col-md-4">
+                <form method="get" action="{% url 'todos_usuarios' %}" id="filter-form">
+                    <label for="filtro" class="form-label fw-bold">Mostrar usuarios:</label>
+                    <select name="filtro" id="filtro" class="form-select" onchange="this.form.submit()">
+                        <option value="vigentes" {% if filtro == 'vigentes' %}selected{% endif %}>Vigentes</option>
+                        <option value="eliminados" {% if filtro == 'eliminados' %}selected{% endif %}>Eliminados</option>
+                        <option value="todos" {% if filtro == 'todos' %}selected{% endif %}>Todos</option>
+                    </select>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <label for="searchInput" class="form-label fw-bold">Buscar:</label>
+                <input type="text" id="searchInput" class="form-control" placeholder="Buscar por nombre, apellido, usuario o correo...">
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="text-white" style="background: linear-gradient(90deg, #8B0000, #B22222);">
+                    <tr>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Usuario</th>
+                        <th>Correo</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.first_name }}</td>
+                        <td>{{ usuario.last_name }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>
+                            {% if usuario.visible and usuario.is_active %}
+                                <span class="badge bg-success">Activo</span>
+                            {% elif usuario.visible and not usuario.is_active %}
+                                <span class="badge bg-warning text-dark">Inactivo</span>
+                            {% else %}
+                                <span class="badge bg-danger">Eliminado</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            {% if usuario.visible %}
+                                <a class="btn btn-sm btn-primary" href="{% url 'editar_usuario' usuario.id %}"><i class="bi bi-pencil-square"></i></a>
+                                {% if usuario.is_active %}
+                                    <a class="btn btn-sm btn-warning" href="{% url 'desactivar_usuario' usuario.id %}">Desactivar</a>
+                                {% else %}
+                                    <a class="btn btn-sm btn-info" href="{% url 'activar_usuario' usuario.id %}">Activar</a>
+                                {% endif %}
+                                <a class="btn btn-sm btn-danger" href="{% url 'eliminar_usuario' usuario.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');"><i class="bi bi-trash3"></i></a>
+                            {% else %}
+                                <a class="btn btn-sm btn-success" href="{% url 'restaurar_usuario' usuario.id %}">Restaurar</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const tableBody = document.getElementById('userTableBody');
+    const rows = tableBody.getElementsByTagName('tr');
+
+    searchInput.addEventListener('keyup', function() {
+        const searchTerm = searchInput.value.toLowerCase();
+
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const rowData = row.textContent || row.innerText;
+            
+            if (rowData.toLowerCase().includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

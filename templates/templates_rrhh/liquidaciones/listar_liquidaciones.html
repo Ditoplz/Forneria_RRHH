@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Listado de Liquidaciones</h2>
+
+        <div>
+            <a href="{% url 'gestor_rrhh' %}" class="btn btn-outline-dark me-2"><i class="bi bi-arrow-left-circle-fill me-1"></i>Volver</a>
+            <a href="{% url 'crear_liquidacion' %}" class="btn text-white" style="background-color: #B22222;"><i class="bi bi-plus-circle-fill me-1"></i>Crear Nueva Liquidacion</a>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-lg rounded-4">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="text-white" style="background: linear-gradient(90deg, #8B0000, #B22222);">
+                    <tr>
+                        <th>ID</th>
+                        <th>Empleado</th>
+                        <th>Periodo</th>
+                        <th>Bruto</th>
+                        <th>Líquido</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+        <tbody>
+        {% for l in liquidaciones %}
+            <tr>
+                <td>{{ l.id }}</td>
+                <td>{{ l.empleado.nombres }} {{ l.empleado.a_paterno }}</td>
+                <td>{{ l.periodo }}</td>
+                <td>${{ l.bruto }}</td>
+                <td>${{ l.liquido }}</td>
+                <td>
+                    <a href="{% url 'editar_liquidacion' l.id %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{% url 'eliminar_liquidacion' l.id %}"
+                       class="btn btn-danger btn-sm">
+                       <i class="bi bi-trash3"></i>
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="6" class="text-center">No hay liquidaciones registradas.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

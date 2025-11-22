@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-5">
+
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #8B0000, #B22222);">
+            <h3 class="mb-0">Editar Empleado</h3>
+        </div>
+
+        <div class="card-body bg-light">
+            <form method="POST" action="{% url 'editar_empleado' empleado.id %}" class="p-3">
+                {% csrf_token %}
+                
+                {{ empleado_form.non_field_errors }}
+
+                <!-- Información Personal -->
+                <h5 class="fw-bold mt-2 mb-3">Información Personal</h5>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.nombres.label_tag }}
+                        {{ empleado_form.nombres }}
+                        {{ empleado_form.nombres.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.a_paterno.label_tag }}
+                        {{ empleado_form.a_paterno }}
+                        {{ empleado_form.a_paterno.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.a_materno.label_tag }}
+                        {{ empleado_form.a_materno }}
+                        {{ empleado_form.a_materno.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.run.label_tag }}
+                        {{ empleado_form.run }}
+                        {{ empleado_form.run.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.correo.label_tag }}
+                        {{ empleado_form.correo }}
+                        {{ empleado_form.correo.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.fono.label_tag }}
+                        {{ empleado_form.fono }}
+                        {{ empleado_form.fono.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ empleado_form.clave.label_tag }}
+                        {{ empleado_form.clave }}
+                        {{ empleado_form.clave.errors }}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- Dirección -->
+                <h5 class="fw-bold mb-3">Dirección</h5>
+
+                {{ direccion_form.non_field_errors }}
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        {{ direccion_form.calle.label_tag }}
+                        {{ direccion_form.calle }}
+                        {{ direccion_form.calle.errors }}
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        {{ direccion_form.numero.label_tag }}
+                        {{ direccion_form.numero }}
+                        {{ direccion_form.numero.errors }}
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        {{ direccion_form.depto.label_tag }}
+                        {{ direccion_form.depto }}
+                        {{ direccion_form.depto.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ direccion_form.comuna.label_tag }}
+                        {{ direccion_form.comuna }}
+                        {{ direccion_form.comuna.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ direccion_form.region.label_tag }}
+                        {{ direccion_form.region }}
+                        {{ direccion_form.region.errors }}
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        {{ direccion_form.codigo_postal.label_tag }}
+                        {{ direccion_form.codigo_postal }}
+                        {{ direccion_form.codigo_postal.errors }}
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a class="btn btn-outline-dark px-4" href="{% url 'todos_empleados' %}">Volver</a>
+                    <button type="submit" class="btn text-white px-4" style="background-color: #B22222;">Guardar Cambios</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

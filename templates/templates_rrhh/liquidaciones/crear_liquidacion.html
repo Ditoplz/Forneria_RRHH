@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-4 w-100">
+        <!-- Card header -->
+        <div class="card-header bg-white border-0">
+            <h1 class="fw-bold text-danger mb-1">Crear Liquidación</h1>
+            <h5 class="text-muted">Seleccione el empleado y complete los datos de la liquidación</h5>
+        </div>
+
+        <div class="card-body">
+            <!-- Formulario 1: Elegir empleado -->
+            <form method="GET" class="mb-4">
+                <div class="mb-3">
+                    <label for="id_empleado" class="form-label fw-semibold">Empleado:</label>
+                    <select name="empleado" id="id_empleado" class="form-control">
+                        <option value="">Seleccione...</option>
+                        {% for emp in empleados %}
+                            <option value="{{ emp.id }}"
+                                {% if empleado_id == emp.id|stringformat:"s" %}selected{% endif %}>
+                                {{ emp.nombres }} {{ emp.a_paterno }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-arrow-clockwise"></i> Actualizar Página
+                </button>
+            </form>
+
+            <!-- Formulario 2: Crear liquidación -->
+            {% if empleado_id %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="empleado_id" value="{{ empleado_id }}">
+
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <pre>{{ form.errors }}</pre>
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        {% for field in form %}
+                            <div class="col-md-6 mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-semibold">{{ field.label }}:</label>
+                                {{ field }}
+                                {{ field.errors }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a class="btn btn-secondary" href="{% url 'listar_liquidaciones' %}">
+                            <i class="bi bi-x-circle"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check-circle"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 style="color: #7a0000; font-weight: bold;">
+            Mantenedor de Empleados
+        </h1>
+
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary mt-3 px-4">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-3">
+            <div class="card shadow card-hover">
+                <img src="{% static 'images/empleados_mantenedor.png' %}" class="card-img-top" alt="Empleados">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Empleados</h5>
+                    <a class="btn btn-wine" href="{% url 'todos_empleados' %}">Ingresar</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow card-hover">
+                <img src="{% static 'images/liquidacion.png' %}" class="card-img-top" alt="Liquidaciones">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Liquidaciones</h5>
+                    <a class="btn btn-wine" href="{% url 'listar_liquidaciones' %}">Ingresar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <h2>Eliminar Contrato</h2>
+
+    <p>¿Quieres eliminar el contrato del empleado
+        <strong>{{ contrato.empleado.nombre }}</strong>?
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button class="btn btn-danger">Sí, eliminar</button>
+        <a href="{% url 'listar_contratos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

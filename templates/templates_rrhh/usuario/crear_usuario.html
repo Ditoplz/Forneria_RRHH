@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-4 w-75">
+        <!-- Card header -->
+        <div class="card-header bg-white border-0">
+            <h1 class="fw-bold text-danger mb-1">Crear Nuevo Usuario</h1>
+            <h5 class="text-muted">Complete los datos del nuevo usuario, o vincule un empleado existente.</h5>
+        </div>
+
+        <div class="card-body">
+            <form method="post" id="usuario-form">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <div class="row">
+                    {% for field in form %}
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label fw-bold text-dark">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            <div class="text-danger small mt-1">{{ field.errors }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{% url 'todos_usuarios' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left-circle"></i> Volver
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-person-plus"></i> Crear Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Los datos de los empleados se cargan desde el contexto de la vista
+    const empleadosData = JSON.parse('{{ empleados_data|safe }}');
+    
+    const empleadoSelect = document.getElementById('id_empleado');
+    const firstNameInput = document.getElementById('id_first_name');
+    const lastNameInput = document.getElementById('id_last_name');
+    const emailInput = document.getElementById('id_email');
+
+    empleadoSelect.addEventListener('change', function() {
+        const selectedId = this.value;
+
+        if (selectedId && empleadosData[selectedId]) {
+            const data = empleadosData[selectedId];
+            
+            // Llenar los campos con los datos del empleado, excepto el username
+            firstNameInput.value = data.nombres;
+            lastNameInput.value = data.apellidos;
+            emailInput.value = data.email;
+
+            // Hacer los campos de solo lectura
+            firstNameInput.readOnly = true;
+            lastNameInput.readOnly = true;
+            emailInput.readOnly = true;
+
+        } else {
+            // Si no se selecciona un empleado, limpiar y habilitar los campos
+            firstNameInput.value = '';
+            lastNameInput.value = '';
+            emailInput.value = '';
+
+            firstNameInput.readOnly = false;
+            lastNameInput.readOnly = false;
+            emailInput.readOnly = false;
+        }
+    });
+
+    // Disparar el evento change al cargar la página por si hay un valor seleccionado
+    if (empleadoSelect.value) {
+        empleadoSelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+{% endblock %}

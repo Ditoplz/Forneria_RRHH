@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-5">
+
+    <!-- TÍTULO -->
+    <h2 class="text-center fw-bold mb-4" style="color:#7a0000;">
+        Bienvenido {{ user.first_name }} {{ user.last_name }} a La Fornería Emporio
+    </h2>
+
+    <!-- CONTENEDOR DE TARJETAS -->
+    <div class="d-flex justify-content-center gap-5 flex-wrap">
+
+        <!-- Tarjeta Ventas -->
+        <div class="card shadow-lg border-0 rounded-4 text-center" style="width: 18rem;">
+            <div class="p-4 bg-light rounded-top">
+                <img src="{% static 'images/inventario.png' %}" 
+                     alt="Ventas" 
+                     class="img-fluid"
+                     style="width: 150px; height: 150px; object-fit: contain;">
+            </div>
+
+            <div class="card-body">
+                <h5 class="fw-bold mb-3" style="color:#7a0000;">Módulo de Ventas</h5>
+
+                <a class="btn text-white px-4 py-2" 
+                   style="background-color:#B22222; width:100%;"
+                   href="#">
+                    Ingresar
+                </a>
+            </div>
+        </div>
+
+        <!-- Tarjeta RRHH -->
+        <div class="card shadow-lg border-0 rounded-4 text-center" style="width: 18rem;">
+            <div class="p-4 bg-light rounded-top">
+                <img src="{% static 'images/personas.png' %}" 
+                     alt="RRHH" 
+                     class="img-fluid"
+                     style="width: 150px; height: 150px; object-fit: contain;">
+            </div>
+
+            <div class="card-body">
+                <h5 class="fw-bold mb-3" style="color:#7a0000;">Módulo de RRHH</h5>
+
+                <a class="btn text-white px-4 py-2"
+                   style="background-color:#B22222; width:100%;"
+                   href="{% url 'gestor_rrhh' %}">
+                    Ingresar
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

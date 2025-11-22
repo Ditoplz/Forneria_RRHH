@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block navbar %}
+    {% include 'includes/navbar.html' %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container mt-5">
+
+    <div class="text-center mb-5">
+        <h1 style="color: #7a0000; font-weight: bold;">
+            Mantenedor de Contratos
+        </h1>
+
+        <a href="{% url 'gestor_rrhh' %}" class="btn btn-outline-secondary mt-3 px-4">
+            <i class="bi bi-arrow-left"></i> Volver
+        </a>
+    </div>
+
+
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-3">
+            <div class="card shadow card-hover">
+                <img src="{% static 'images/contratos_gestor.jpg' %}" class="card-img-top" alt="Contratos">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Contratos</h5>
+                    <a class="btn btn-wine" href="{% url 'listar_contratos' %}">Ingresar</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow card-hover">
+                <img src="{% static 'images/cargos_gestor.jpg' %}" class="card-img-top" alt="Cargos">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Cargos</h5>
+                    <a class="btn btn-wine" href="{% url 'todos_cargos' %}">Ingresar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

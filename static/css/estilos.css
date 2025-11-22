@@ -1,0 +1,257 @@
+/* ===============================
+   Paleta principal
+   =============================== */
+:root {
+    --vino: #7b1e1e;
+    --rojo-vivo: #d62828;
+    --blanco: #ffffff;
+    --gris-claro: #f5f5f5;
+    --gris-texto: #333333;
+}
+
+/* ===============================
+   Estilo general
+   =============================== */
+body {
+    background-color: var(--gris-claro);
+    font-family: 'Poppins', sans-serif;
+    color: var(--gris-texto);
+}
+
+/* ===============================
+   Navbar
+   =============================== */
+.navbar-custom {
+    background-color: var(--vino);
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand {
+    color: var(--blanco);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--rojo-vivo);
+}
+
+/* ===============================
+   Tarjetas (Home)
+   =============================== */
+.card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    color: var(--vino);
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ===============================
+   Botones
+   =============================== */
+.btn-success {
+    background-color: var(--vino);
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: var(--rojo-vivo);
+}
+
+.btn-primary {
+    background-color: var(--rojo-vivo);
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: var(--vino);
+}
+
+/* ===============================
+   Contenido principal
+   =============================== */
+.contenido-principal {
+    padding: 2rem;
+}
+
+/* ===============================
+   Pie de página (si lo agregas)
+   =============================== */
+footer {
+    background-color: var(--vino);
+    color: var(--blanco);
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 3rem;
+}
+/* ===============================
+   NAVBAR
+   =============================== */
+.navbar-custom {
+    background-color: var(--vino);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-custom .navbar-brand {
+    color: var(--blanco);
+    font-weight: 700;
+}
+
+.navbar-custom .nav-link {
+    color: var(--blanco);
+    transition: 0.3s;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--rojo-vivo);
+}
+
+.logout-btn {
+    text-decoration: none !important;
+    color: var(--blanco) !important;
+}
+
+.logout-btn:hover {
+    color: var(--rojo-vivo) !important;
+}
+
+/* ===============================
+   LOGIN
+   =============================== */
+.login-card {
+    width: 400px;
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: var(--blanco);
+}
+
+.login-card .card-img-top {
+    height: 120px;
+    object-fit: contain;
+    background-color: var(--gris-claro);
+}
+
+.text-vino {
+    color: var(--vino);
+}
+/* ===============================
+   SECCIONES DE MANTENEDORES
+   =============================== */
+.panel-seccion {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    border-bottom: 3px solid var(--vino);
+    padding-bottom: 0.5rem;
+}
+
+.panel-seccion h1 {
+    color: var(--vino);
+    font-weight: 700;
+}
+
+.panel-seccion h5 {
+    color: var(--gris-texto);
+}
+
+.btn-volver {
+    background-color: var(--vino);
+    color: var(--blanco);
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-volver:hover {
+    background-color: var(--rojo-vivo);
+    color: var(--blanco);
+}
+
+.tarjeta-menu {
+    width: 18rem;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    border: none;
+}
+
+.tarjeta-menu:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tarjeta-menu .card-title {
+    color: var(--vino);
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ===============================
+   Botón vino reutilizable (para "Volver" e "Ingresar")
+   =============================== */
+.btn-wine {
+    background-color: var(--vino);
+    color: var(--blanco);
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    border-radius: 8px;
+}
+
+.btn-wine:hover {
+    background-color: var(--rojo-vivo);
+    color: var(--blanco);
+    transform: scale(1.05);
+}
+
+/* ===============================
+   Tarjetas interactivas en mantenedores
+   =============================== */
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 18px rgba(123, 30, 30, 0.25);
+}
+
+/* ===============================
+   Ajustes visuales para títulos y márgenes
+   =============================== */
+h1, .h1 {
+    color: var(--vino);
+    font-weight: 700;
+}
+
+.text-muted {
+    color: var(--gris-texto) !important;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* ===============================
+   Ajuste general responsive
+   =============================== */
+@media (max-width: 768px) {
+    .tarjeta-menu, .card {
+        width: 100% !important;
+    }
+
+    .col-3.text-end {
+        text-align: center !important;
+        margin-top: 1rem;
+    }
+}
