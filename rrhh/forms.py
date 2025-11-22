@@ -221,6 +221,12 @@ class ContratoForm(forms.ModelForm):
             "detalle_contrato": forms.TextInput(),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(ContratoForm, self).__init__(*args, **kwargs)
+        # Agregamos la clase 'form-control' a todos los campos para que Bootstrap los alinee
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
 
 class LiquidacionForm(forms.ModelForm):
 

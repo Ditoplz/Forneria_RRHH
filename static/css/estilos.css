@@ -60,14 +60,7 @@ body {
 /* ===============================
    Botones
    =============================== */
-.btn-success {
-    background-color: var(--vino);
-    border: none;
-}
 
-.btn-success:hover {
-    background-color: var(--rojo-vivo);
-}
 
 .btn-primary {
     background-color: var(--rojo-vivo);
@@ -194,6 +187,29 @@ footer {
     color: var(--vino);
     font-weight: 600;
     text-align: center;
+}
+
+/* ===============================
+   Ajustes para tarjetas de menú
+   =============================== */
+.tarjeta-menu .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.btn-ingresar-menu {
+    background-color: var(--vino);
+    color: var(--blanco);
+    border: none;
+    margin-top: auto; /* Empuja el botón hacia abajo */
+    transition: all 0.3s ease;
+}
+
+.btn-ingresar-menu:hover {
+    background-color: var(--rojo-vivo);
+    color: var(--blanco);
+    transform: scale(1.05);
 }
 
 /* ===============================

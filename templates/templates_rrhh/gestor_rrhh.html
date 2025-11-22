@@ -18,44 +18,52 @@
         </a>
     </div>
 
-    <div class="d-flex justify-content-center gap-5 flex-wrap">
-
-        <div class="card shadow-lg text-center" style="width: 18rem;">
-            <img src="{% static 'images/contrato.png' %}"
-                 class="card-img-top mx-auto d-block"
-                 alt="Contratos"
-                 style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Contratos y Cargos</h5>
-                <a class="btn btn-success px-4" href="{% url 'mantenedor_contratos' %}">
-                    Ingresar
-                </a>
+    <div class="row justify-content-center g-4">
+        <!-- Tarjeta Mantenedor de Contratos y Cargos -->
+        <div class="col-lg-3 col-md-5">
+            <div class="card tarjeta-menu h-100 shadow-lg text-center">
+                <img src="{% static 'images/contrato.png' %}"
+                     class="card-img-top mx-auto d-block"
+                     alt="Contratos"
+                     style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Contratos y Cargos</h5>
+                    <a class="btn btn-ingresar-menu" href="{% url 'mantenedor_contratos' %}">
+                        Ingresar
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="card shadow-lg text-center" style="width: 18rem;">
-            <img src="{% static 'images/empleados.jpg' %}"
-                 class="card-img-top mx-auto d-block"
-                 alt="Empleados"
-                 style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Empleados y Liquidaciones</h5>
-                <a class="btn btn-success px-4" href="{% url 'mantenedor_empleados' %}">
-                    Ingresar
-                </a>
+        <!-- Tarjeta Mantenedor de Empleados y Liquidaciones -->
+        <div class="col-lg-3 col-md-5">
+            <div class="card tarjeta-menu h-100 shadow-lg text-center">
+                <img src="{% static 'images/empleados.jpg' %}"
+                     class="card-img-top mx-auto d-block"
+                     alt="Empleados"
+                     style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Empleados y Liquidaciones</h5>
+                    <a class="btn btn-ingresar-menu" href="{% url 'mantenedor_empleados' %}">
+                        Ingresar
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="card shadow-lg text-center" style="width: 18rem;">
-            <img src="{% static 'images/usuarios.png' %}"
-                 class="card-img-top mx-auto d-block"
-                 alt="Usuarios"
-                 style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
-            <div class="card-body">
-                <h5 class="card-title mb-3">Usuarios y Cuentas</h5>
-                <a class="btn btn-success px-4" href="{% url 'mantenedor_usuarios' %}">
-                    Ingresar
-                </a>
+        <!-- Tarjeta Mantenedor de Usuarios y Cuentas -->
+        <div class="col-lg-3 col-md-5">
+            <div class="card tarjeta-menu h-100 shadow-lg text-center">
+                <img src="{% static 'images/usuarios.png' %}"
+                     class="card-img-top mx-auto d-block"
+                     alt="Usuarios"
+                     style="width: 200px; height: 200px; object-fit: contain; margin-top: 15px;">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Usuarios y Cuentas</h5>
+                    <a class="btn btn-ingresar-menu" href="{% url 'mantenedor_usuarios' %}">
+                        Ingresar
+                    </a>
+                </div>
             </div>
         </div>
 

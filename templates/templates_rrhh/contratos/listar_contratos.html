@@ -12,8 +12,37 @@
         <h2 class="fw-bold text-dark">Listado de Contratos</h2>
 
         <div>
-            <a href="{% url 'gestor_rrhh' %}" class="btn btn-outline-dark me-2"><i class="bi bi-arrow-left-circle-fill me-1"></i>Volver</a>
+            <a href="{% url 'mantenedor_contratos' %}" class="btn btn-outline-dark me-2"><i class="bi bi-arrow-left-circle-fill me-1"></i>Volver</a>
             <a href="{% url 'crear_contrato' %}" class="btn text-white" style="background-color: #B22222;"><i class="bi bi-plus-circle-fill me-1"></i>Crear Nuevo Contrato</a>
+        </div>
+    </div>
+
+    <!-- Formulario de Búsqueda y Filtros -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{% url 'listar_contratos' %}" id="searchForm">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label for="q" class="form-label fw-bold">Buscar por Empleado</label>
+                        <input type="text" name="q" id="q" class="form-control" value="{{ query|default:'' }}" placeholder="Ej: Juan Pérez">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filtro_vigencia" class="form-label fw-bold">Filtro de Vigencia</label>
+                        <select name="filtro_vigencia" id="filtro_vigencia" class="form-select">
+                            <option value="todos" {% if filtro_vigencia == 'todos' %}selected{% endif %}>Todos</option>
+                            <option value="vigentes" {% if filtro_vigencia == 'vigentes' %}selected{% endif %}>Vigentes</option>
+                            <option value="vencidos" {% if filtro_vigencia == 'vencidos' %}selected{% endif %}>Vencidos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="filtro_visibilidad" class="form-label fw-bold">Ver</label>
+                        <select name="filtro_visibilidad" id="filtro_visibilidad" class="form-select">
+                            <option value="activos" {% if filtro_visibilidad == 'activos' %}selected{% endif %}>Activos</option>
+                            <option value="eliminados" {% if filtro_visibilidad == 'eliminados' %}selected{% endif %}>Eliminados</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -30,7 +59,7 @@
                     </tr>
                 </thead>
 
-        <tbody>
+        <tbody id="contracts-table-body">
             {% for contrato in contratos %}
             <tr>
                 <td>{{ contrato.empleado.nombres }}</td>
@@ -44,10 +73,74 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="5" class="text-center">No hay contratos registrados.</td>
+                <td colspan="5" class="text-center">No se encontraron contratos con los filtros aplicados.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('searchForm');
+    const tableBody = document.getElementById('contracts-table-body');
+
+    let debounceTimer;
+
+    const performSearch = () => {
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData).toString();
+
+        fetch(`{% url 'listar_contratos' %}?${params}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            tableBody.innerHTML = ''; // Limpiamos la tabla actual
+
+            if (data.contratos.length > 0) {
+                data.contratos.forEach(contrato => {
+                    // Creamos las URLs para los botones de acción
+                    const editUrl = `/rrhh/contratos/editar/${contrato.id}/`;
+                    const deleteUrl = `/rrhh/contratos/eliminar/${contrato.id}/`;
+
+                    // Creamos la nueva fila y la añadimos a la tabla
+                    const row = `
+                        <tr>
+                            <td>${contrato.empleado__nombres}</td>
+                            <td>${contrato.fecha_inicio}</td>
+                            <td>${contrato.fecha_fin}</td>
+                            <td>${contrato.sueldo_base}</td>
+                            <td>
+                                <a href="${editUrl}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                                <a href="${deleteUrl}" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                // Si no hay resultados, mostramos un mensaje
+                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No se encontraron contratos con los filtros aplicados.</td></tr>';
+            }
+        })
+        .catch(error => console.error('Error al realizar la búsqueda:', error));
+    };
+
+    form.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(performSearch, 300);
+    });
+
+    form.addEventListener('change', (e) => {
+        // Para los <select>, la búsqueda es inmediata al cambiar
+        if (e.target.tagName === 'SELECT') performSearch();
+    });
+});
+</script>
+{% endblock %}
+
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.contrib.auth import login
 import json
 from django.contrib.auth.models import User # Se mantiene para el formulario de creación
@@ -288,19 +289,61 @@ def activar_usuario(request, id_usuario):
     return redirect('todos_usuarios')
 
 # Vistas de contratos -----------------------------------------
+from django.utils import timezone
+
 def listar_contratos(request):
-    estado = request.GET.get('estado', 'activos')
+    # Obtener parámetros de la URL
+    query = request.GET.get('q', '')
+    filtro_vigencia = request.GET.get('filtro_vigencia', 'todos')
+    filtro_visibilidad = request.GET.get('filtro_visibilidad', 'activos')
     user = request.user
 
-    if estado == 'eliminados':
-        base_query = Contrato.objects.filter(visible=False)
-    else:
-        base_query = Contrato.objects.filter(visible=True)
+    # Query base
+    base_query = Contrato.objects.select_related('empleado').all()
 
+    # 1. Filtro por visibilidad (soft-delete)
+    if filtro_visibilidad == 'eliminados':
+        base_query = base_query.filter(visible=False)
+    else: # 'activos'
+        base_query = base_query.filter(visible=True)
+
+    # 2. Filtro por vigencia del contrato
+    hoy = timezone.now().date()
+    if filtro_vigencia == 'vigentes':
+        base_query = base_query.filter(fecha_fin__gte=hoy)
+    elif filtro_vigencia == 'vencidos':
+        base_query = base_query.filter(fecha_fin__lt=hoy)
+    # Si es 'todos', no se aplica filtro de vigencia.
+
+    # 3. Filtro por búsqueda de texto (nombre de empleado)
+    if query:
+        base_query = base_query.filter(empleado__nombres__icontains=query)
+
+    # 4. Filtro por rol de usuario (si no es superusuario)
     if not user.is_superuser:
         base_query = base_query.filter(empleado__user=user)
 
-    return render(request, 'templates_rrhh/contratos/listar_contratos.html', {'contratos': base_query, 'estado': estado})
+    context = {
+        'contratos': base_query, 
+        'query': query, 
+        'filtro_vigencia': filtro_vigencia, 
+        'filtro_visibilidad': filtro_visibilidad
+    }
+
+    # Si la petición es AJAX, devolvemos los datos en formato JSON
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        # Convertimos el queryset a una lista de diccionarios para poder enviarlo como JSON
+        contratos_data = list(base_query.values(
+            'id', 
+            'empleado__nombres', 
+            'fecha_inicio', 
+            'fecha_fin', 
+            'sueldo_base'
+        ))
+        return JsonResponse({'contratos': contratos_data})
+    
+    # Si es una carga de página normal, renderizamos el HTML completo
+    return render(request, 'templates_rrhh/contratos/listar_contratos.html', context)
 
 def crear_contrato(request):
     if request.method == 'POST':

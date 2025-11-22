@@ -66,15 +66,19 @@
                         </td>
                         <td class="text-center">
                             {% if usuario.visible %}
-                                <a class="btn btn-sm btn-primary" href="{% url 'editar_usuario' usuario.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-sm btn-info" href="{% url 'editar_usuario' usuario.id %}"><i class="bi bi-pencil-square"></i></a>
                                 {% if usuario.is_active %}
                                     <a class="btn btn-sm btn-warning" href="{% url 'desactivar_usuario' usuario.id %}">Desactivar</a>
                                 {% else %}
-                                    <a class="btn btn-sm btn-info" href="{% url 'activar_usuario' usuario.id %}">Activar</a>
+                                    <form action="{% url 'activar_usuario' usuario.id %}" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-success">Activar</button>
+                                    </form>
                                 {% endif %}
                                 <a class="btn btn-sm btn-danger" href="{% url 'eliminar_usuario' usuario.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este usuario?');"><i class="bi bi-trash3"></i></a>
                             {% else %}
-                                <a class="btn btn-sm btn-success" href="{% url 'restaurar_usuario' usuario.id %}">Restaurar</a>
+                                <form action="{% url 'restaurar_usuario' usuario.id %}" method="GET" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">Restaurar</button>
+                                </form>
                             {% endif %}
                         </td>
                     </tr>
