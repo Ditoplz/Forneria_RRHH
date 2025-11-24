@@ -16,6 +16,16 @@
         </div>
     </div>
 
+    <!-- Barra de Búsqueda -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{% url 'listar_liquidaciones' %}" id="searchForm">
+                <label for="q" class="form-label fw-bold">Buscar por Empleado</label>
+                <input type="text" name="q" id="q" class="form-control" value="{{ query|default:'' }}" placeholder="Escribe un nombre para buscar...">
+            </form>
+        </div>
+    </div>
+
     <div class="card border-0 shadow-lg rounded-4">
         <div class="card-body p-0">
             <table class="table table-hover align-middle mb-0">
@@ -29,7 +39,7 @@
                         <th>Acciones</th>
                     </tr>
                 </thead>
-        <tbody>
+        <tbody id="liquidaciones-table-body">
         {% for l in liquidaciones %}
             <tr>
                 <td>{{ l.id }}</td>
@@ -38,7 +48,7 @@
                 <td>${{ l.bruto }}</td>
                 <td>${{ l.liquido }}</td>
                 <td>
-                    <a href="{% url 'editar_liquidacion' l.id %}" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{% url 'editar_liquidacion' l.id %}" class="btn btn-sm btn-info"><i class="bi bi-pencil-square"></i></a>
                     <a href="{% url 'eliminar_liquidacion' l.id %}"
                        class="btn btn-danger btn-sm">
                        <i class="bi bi-trash3"></i>
@@ -51,4 +61,69 @@
         </tbody>
     </table>
 </div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('q');
+    const tableBody = document.getElementById('liquidaciones-table-body');
+
+    const fetchLiquidaciones = () => {
+        const query = searchInput.value;
+        // Usamos la URL actual y añadimos el parámetro de búsqueda
+        const url = `{% url 'listar_liquidaciones' %}?q=${encodeURIComponent(query)}`;
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Limpiamos el cuerpo de la tabla
+            tableBody.innerHTML = '';
+
+            if (data.liquidaciones && data.liquidaciones.length > 0) {
+                data.liquidaciones.forEach(l => {
+                    // Creamos las URLs para las acciones
+                    const editarUrl = `/rrhh/liquidaciones/editar/${l.id}/`;
+                    const eliminarUrl = `/rrhh/liquidaciones/eliminar/${l.id}/`;
+
+                    const row = `
+                        <tr>
+                            <td>${l.id}</td>
+                            <td>${l.empleado__nombres} ${l.empleado__a_paterno} ${l.empleado__a_materno}</td>
+                            <td>${l.periodo}</td>
+                            <td>$${l.bruto}</td>
+                            <td>$${l.liquido}</td>
+                            <td>
+                                <a href="${editarUrl}" class="btn btn-sm btn-info"><i class="bi bi-pencil-square"></i></a>
+                                <a href="${eliminarUrl}" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                // Si no hay resultados, mostramos un mensaje
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No se encontraron liquidaciones que coincidan con la búsqueda.</td></tr>';
+            }
+        })
+        .catch(error => {
+            console.error('Error al realizar la búsqueda AJAX:', error);
+            tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Ocurrió un error al buscar.</td></tr>';
+        });
+    };
+
+    // Variable para controlar el tiempo de espera antes de buscar
+    let debounceTimer;
+
+    searchInput.addEventListener('keyup', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(fetchLiquidaciones, 300); // Espera 300ms después de que el usuario deja de escribir
+    });
+});
+</script>
 {% endblock %}

@@ -60,7 +60,7 @@
                         </td>
                         <td class="text-center">
                             {% if cargo.visible %}
-                                <a class="btn btn-sm btn-warning" href="{% url 'editar_cargo' cargo.id %}"><i class="bi bi-pencil-square"></i></a>
+                                <a class="btn btn-sm btn-info" href="{% url 'editar_cargo' cargo.id %}"><i class="bi bi-pencil-square"></i></a>
                                 <a class="btn btn-sm btn-danger" href="{% url 'eliminar_cargo' cargo.id %}" onclick="return confirm('¿Estás seguro de que deseas eliminar este cargo?');"><i class="bi bi-trash3"></i></a>
                             {% else %}
                                 <a class="btn btn-sm btn-success" href="{% url 'restaurar_cargo' cargo.id %}">Restaurar</a>

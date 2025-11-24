@@ -61,16 +61,21 @@ def crear_empleado(request):
 
 
 def todos_empleados(request):
-    estado = request.GET.get('estado', 'activos')
+    # Obtener el parámetro de filtro de la URL, por defecto 'vigentes'
+    filtro = request.GET.get('filtro', 'vigentes')
+    query = request.GET.get('q', '') # Obtener el término de búsqueda para pasarlo al template
 
-    if estado == 'eliminados':
-        empleados = Empleado.objects.filter(visible=False)
-    else:
+    if filtro == 'vigentes':
         empleados = Empleado.objects.filter(visible=True)
+    elif filtro == 'eliminados':
+        empleados = Empleado.objects.filter(visible=False)
+    else: # 'todos' o cualquier otro valor
+        empleados = Empleado.objects.all()
         
     data = {
         'empleados': empleados,
-        'estado': estado
+        'filtro': filtro,
+        'query': query, # Pasamos el query para que el campo de búsqueda mantenga su valor
     }
     return render(request, 'templates_rrhh/empleado/todos_empleados.html', data)
 
@@ -382,18 +387,45 @@ def restaurar_contrato(request, contrato_id):
 # Vistas de liquidaciones ---------------------------------------
 
 def listar_liquidaciones(request):
-    estado = request.GET.get('estado', 'activos')
+    # Obtener parámetros de la URL
+    query = request.GET.get('q', '')
+    filtro_visibilidad = request.GET.get('filtro_visibilidad', 'activos')
     user = request.user
 
-    if estado == 'eliminados':
+    # Query base
+    if filtro_visibilidad == 'eliminados':
         base_query = Liquidacion.objects.filter(visible=False)
-    else:
+    else: # 'activos'
         base_query = Liquidacion.objects.filter(visible=True)
 
+    # Filtro por búsqueda de texto (nombre de empleado)
+    if query:
+        base_query = base_query.filter(empleado__nombres__icontains=query)
+
+    # Filtro por rol de usuario
     if not user.is_superuser:
         base_query = base_query.filter(empleado__user=user)
 
-    return render(request, 'templates_rrhh/liquidaciones/listar_liquidaciones.html', {'liquidaciones': base_query, 'estado': estado})
+    context = {
+        'liquidaciones': base_query,
+        'query': query,
+        'filtro_visibilidad': filtro_visibilidad
+    }
+
+    # Si la petición es AJAX, devolvemos los datos en formato JSON
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        liquidaciones_data = list(base_query.values(
+            'id', 
+            'empleado__nombres', 
+            'empleado__a_paterno', 
+            'empleado__a_materno',
+            'periodo', 
+            'bruto', 
+            'liquido'
+        ))
+        return JsonResponse({'liquidaciones': liquidaciones_data})
+
+    return render(request, 'templates_rrhh/liquidaciones/listar_liquidaciones.html', context)
 
 def crear_liquidacion(request):
     empleado_id = request.GET.get("empleado")

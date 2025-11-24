@@ -59,7 +59,7 @@
                     </tr>
                 </thead>
 
-        <tbody id="contracts-table-body">
+        <tbody id="contract-table-body">
             {% for contrato in contratos %}
             <tr>
                 <td>{{ contrato.empleado.nombres }}</td>
@@ -67,7 +67,7 @@
                 <td>{{ contrato.fecha_fin }}</td>
                 <td>{{ contrato.sueldo_base }}</td>
                 <td>
-                    <a href="{% url 'editar_contrato' contrato.id %}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
+                    <a href="{% url 'editar_contrato' contrato.id %}" class="btn btn-sm btn-info"><i class="bi bi-pencil-square"></i></a>
                     <a href="{% url 'eliminar_contrato' contrato.id %}" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
                 </td>
             </tr>
@@ -80,67 +80,44 @@
     </table>
 </div>
 
-{% block extra_js %}
+{% endblock %}
+
+{% block javascripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('searchForm');
-    const tableBody = document.getElementById('contracts-table-body');
-
-    let debounceTimer;
+    const tableBody = document.getElementById('contract-table-body');
+    const searchInput = document.getElementById('q');
+    const vigenciaSelect = document.getElementById('filtro_vigencia');
+    const visibilidadSelect = document.getElementById('filtro_visibilidad');
 
     const performSearch = () => {
-        const formData = new FormData(form);
-        const params = new URLSearchParams(formData).toString();
+        const searchTerm = searchInput.value.toLowerCase();
+        const vigencia = vigenciaSelect.value;
+        const visibilidad = visibilidadSelect.value;
+        const rows = tableBody.getElementsByTagName('tr');
 
-        fetch(`{% url 'listar_contratos' %}?${params}`, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
+        for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            const cells = row.getElementsByTagName('td');
+            if (cells.length > 0) { // Asegurarse de que no es una fila de "no encontrado"
+                const rowData = row.textContent || row.innerText;
+                
+                if (rowData.toLowerCase().includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            tableBody.innerHTML = ''; // Limpiamos la tabla actual
-
-            if (data.contratos.length > 0) {
-                data.contratos.forEach(contrato => {
-                    // Creamos las URLs para los botones de acción
-                    const editUrl = `/rrhh/contratos/editar/${contrato.id}/`;
-                    const deleteUrl = `/rrhh/contratos/eliminar/${contrato.id}/`;
-
-                    // Creamos la nueva fila y la añadimos a la tabla
-                    const row = `
-                        <tr>
-                            <td>${contrato.empleado__nombres}</td>
-                            <td>${contrato.fecha_inicio}</td>
-                            <td>${contrato.fecha_fin}</td>
-                            <td>${contrato.sueldo_base}</td>
-                            <td>
-                                <a href="${editUrl}" class="btn btn-warning btn-sm"><i class="bi bi-pencil-square"></i></a>
-                                <a href="${deleteUrl}" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
-                            </td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
-                });
-            } else {
-                // Si no hay resultados, mostramos un mensaje
-                tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No se encontraron contratos con los filtros aplicados.</td></tr>';
-            }
-        })
-        .catch(error => console.error('Error al realizar la búsqueda:', error));
+        }
     };
 
-    form.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(performSearch, 300);
-    });
+    // Para la barra de búsqueda de texto
+    searchInput.addEventListener('keyup', performSearch);
 
-    form.addEventListener('change', (e) => {
-        // Para los <select>, la búsqueda es inmediata al cambiar
-        if (e.target.tagName === 'SELECT') performSearch();
+    // Para los filtros <select>, que recargan la página
+    vigenciaSelect.addEventListener('change', () => form.submit());
+    visibilidadSelect.addEventListener('change', () => form.submit());
     });
-});
 </script>
-{% endblock %}
-
 {% endblock %}
