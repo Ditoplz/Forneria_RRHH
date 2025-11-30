@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from forneriaApi import views as vistasApi
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -35,5 +36,5 @@ urlpatterns = [
     path('rrhh/liquidaciones/editar/<int:id>/', views.editar_liquidacion, name='editar_liquidacion'),
     path('rrhh/liquidaciones/eliminar/<int:liquidacion_id>/', views.eliminar_liquidacion, name='eliminar_liquidacion'),
     path('rrhh/liquidaciones/restaurar/<int:liquidacion_id>/', views.restaurar_liquidacion, name='restaurar_liquidacion'),
-
+    path('empleadosApi/',vistasApi.empleadosApi, name='empleadoApi'),
 ]

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth import login
 import json
+from django.utils import timezone
 from django.contrib.auth.models import User # Se mantiene para el formulario de creación
 from rrhh.models import Empleado, Cargo, AuthUser, Direccion
 from django.db.models import Q
@@ -59,7 +60,7 @@ def crear_empleado(request):
         'direccion_form': direccion_form
     })
 
-
+@login_required
 def todos_empleados(request):
     # Obtener el parámetro de filtro de la URL, por defecto 'vigentes'
     filtro = request.GET.get('filtro', 'vigentes')
@@ -79,6 +80,7 @@ def todos_empleados(request):
     }
     return render(request, 'templates_rrhh/empleado/todos_empleados.html', data)
 
+@login_required
 def cargar_editar_empleado(request, id_empleado):
     empleado= get_object_or_404(Empleado,id=id_empleado)
     form = EmpleadoForm(instance=empleado)
@@ -136,6 +138,7 @@ def crear_cargo(request):
     
     return render(request, 'templates_rrhh/cargo/crear_cargo.html', {'form': form})
 
+@login_required
 def todos_cargos(request):
     filtro = request.GET.get('filtro', 'vigentes')
     query = request.GET.get('q', '') # Obtener el término de búsqueda
@@ -159,12 +162,14 @@ def todos_cargos(request):
     }
     return render(request, 'templates_rrhh/cargo/todos_cargos.html', data)
 
+@login_required
 def cargar_editar_cargo(request, id_cargo):
     cargo= get_object_or_404(Cargo,id=id_cargo)
     form = CargoForm(instance=cargo)
     
     return render(request, 'templates_rrhh/cargo/editar_cargo.html', {'form': form, 'cargo': cargo})
 
+@login_required
 def editar_cargo(request, id_cargo):
     cargo= get_object_or_404(Cargo,id=id_cargo)
     
@@ -178,6 +183,7 @@ def editar_cargo(request, id_cargo):
     
     return render(request, 'templates_rrhh/cargo/editar_cargo.html', {'form': form, 'cargo': cargo})
 
+@login_required
 def eliminar_cargo(request, id_cargo):
     cargo = get_object_or_404(Cargo, id=id_cargo)
     
@@ -187,6 +193,7 @@ def eliminar_cargo(request, id_cargo):
     
     return redirect('todos_cargos')
 
+@login_required
 def restaurar_cargo(request, id_cargo):
     cargo = get_object_or_404(Cargo, id=id_cargo)
     
@@ -294,8 +301,8 @@ def activar_usuario(request, id_usuario):
     return redirect('todos_usuarios')
 
 # Vistas de contratos -----------------------------------------
-from django.utils import timezone
 
+@login_required
 def listar_contratos(request):
     # Obtener parámetros de la URL
     query = request.GET.get('q', '')
@@ -335,21 +342,10 @@ def listar_contratos(request):
         'filtro_visibilidad': filtro_visibilidad
     }
 
-    # Si la petición es AJAX, devolvemos los datos en formato JSON
-    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        # Convertimos el queryset a una lista de diccionarios para poder enviarlo como JSON
-        contratos_data = list(base_query.values(
-            'id', 
-            'empleado__nombres', 
-            'fecha_inicio', 
-            'fecha_fin', 
-            'sueldo_base'
-        ))
-        return JsonResponse({'contratos': contratos_data})
-    
     # Si es una carga de página normal, renderizamos el HTML completo
     return render(request, 'templates_rrhh/contratos/listar_contratos.html', context)
 
+@login_required
 def crear_contrato(request):
     if request.method == 'POST':
         form = ContratoForm(request.POST)
@@ -371,12 +367,14 @@ def editar_contrato(request, contrato_id):
         form = ContratoForm(instance=contrato)
     return render(request, 'templates_rrhh/contratos/editar_contrato.html', {'form': form})
 
+@login_required
 def eliminar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
     contrato.visible = False
     contrato.save()
     return redirect('listar_contratos')
 
+@login_required
 def restaurar_contrato(request, contrato_id):
     contrato = get_object_or_404(Contrato, id=contrato_id)
     contrato.visible = True
@@ -386,6 +384,7 @@ def restaurar_contrato(request, contrato_id):
 
 # Vistas de liquidaciones ---------------------------------------
 
+@login_required
 def listar_liquidaciones(request):
     # Obtener parámetros de la URL
     query = request.GET.get('q', '')
@@ -427,6 +426,7 @@ def listar_liquidaciones(request):
 
     return render(request, 'templates_rrhh/liquidaciones/listar_liquidaciones.html', context)
 
+@login_required
 def crear_liquidacion(request):
     empleado_id = request.GET.get("empleado")
 
@@ -462,6 +462,7 @@ def crear_liquidacion(request):
         data
     )
 
+@login_required
 def editar_liquidacion(request, id):
     liquidacion = get_object_or_404(Liquidacion, id=id)
 
@@ -479,13 +480,14 @@ def editar_liquidacion(request, id):
         {"form": form, "liquidacion": liquidacion}
     )
 
-
+@login_required
 def eliminar_liquidacion(request, liquidacion_id):
     liquidacion = get_object_or_404(Liquidacion, id=liquidacion_id)
     liquidacion.visible = False
     liquidacion.save()
     return redirect("listar_liquidaciones")
 
+@login_required
 def restaurar_liquidacion(request, liquidacion_id):
     liquidacion = get_object_or_404(Liquidacion, id=liquidacion_id)
     liquidacion.visible = True
