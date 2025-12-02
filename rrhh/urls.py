@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
-from forneriaApi import views as vistasApi
+from forneriaRrhhApi import views as vistasApi
 
 urlpatterns = [
     path('', views.index, name='index'),

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from forneria import views
-from forneriaApi import views as vistasApi
+from forneriaRrhhApi import views as vistasApi
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 

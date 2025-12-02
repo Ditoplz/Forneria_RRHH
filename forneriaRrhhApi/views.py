@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from rrhh.models import Empleado,Contrato,Liquidacion,AuthUser,Cargo
 from django.http import JsonResponse
-from forneriaApi.serializers import EmpleadoSerializer,ContratoSerializer,LiquidacionSerializer,AuthUserSerializer,CargoSerializer
+from forneriaRrhhApi.serializers import EmpleadoSerializer,ContratoSerializer,LiquidacionSerializer,AuthUserSerializer,CargoSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework import status
+
 
 def empleadosApi(request):
     empleados = Empleado.objects.all()
@@ -29,7 +30,7 @@ def empleadosApi(request):
     return JsonResponse(data)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated, DjangoModelPermissions])
 def empleado_listado(request):
     if request.method == 'GET':
         empleados = Empleado.objects.all()
@@ -44,7 +45,7 @@ def empleado_listado(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def empleado_detalle(request, pk):
     try:
         empleado = Empleado.objects.get(pk=pk)
@@ -67,6 +68,7 @@ def empleado_detalle(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def liquidacionesApi(request):
     liquidaciones = Liquidacion.objects.all()
     data = {
@@ -84,7 +86,7 @@ def liquidacionesApi(request):
     return JsonResponse(data)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def liquidacion_listado(request):
     if request.method == 'GET':
         liquidaciones = Liquidacion.objects.all()
@@ -99,7 +101,7 @@ def liquidacion_listado(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def liquidacion_detalle(request, pk):
     try:
         liquidacion = Liquidacion.objects.get(pk=pk)
@@ -122,7 +124,7 @@ def liquidacion_detalle(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def cargosApi(request):
     cargos = Cargo.objects.all()
     data = {
@@ -138,7 +140,7 @@ def cargosApi(request):
     return JsonResponse(data)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def cargo_listado(request):
     if request.method == 'GET':
         cargos = Cargo.objects.all()
@@ -153,7 +155,7 @@ def cargo_listado(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def cargo_detalle(request, pk):
     try:
         cargo = Cargo.objects.get(pk=pk)
@@ -175,7 +177,7 @@ def cargo_detalle(request, pk):
         cargo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def contratosApi(request):
     contratos = Contrato.objects.all()
     data = {
@@ -195,7 +197,7 @@ def contratosApi(request):
     return JsonResponse(data)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def contrato_listado(request):
     if request.method == 'GET':
         contratos = Contrato.objects.all()
@@ -210,7 +212,7 @@ def contrato_listado(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def contrato_detalle(request, pk):
     try:
         contrato = Contrato.objects.get(pk=pk)
@@ -233,7 +235,7 @@ def contrato_detalle(request, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def AuthUserApi(request):
     usuarios = AuthUser.objects.all()
     data = {
@@ -256,7 +258,7 @@ def AuthUserApi(request):
     return JsonResponse(data)
 
 @api_view(['GET', 'POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def usuario_listado(request):
     if request.method == 'GET':
         usuarios = AuthUser.objects.all()
@@ -271,7 +273,7 @@ def usuario_listado(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated,DjangoModelPermissions])
 def usuario_detalle(request, pk):
     try:
         usuario = AuthUser.objects.get(pk=pk)
