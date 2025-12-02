@@ -83,6 +83,13 @@ class UsuarioForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-select'}),
         help_text="Si seleccionas un empleado, sus datos se cargarán automáticamente."
     )
+    
+    grupo = forms.ChoiceField(
+        choices=[('admin', 'Administrador'), ('rrhh', 'Recursos Humanos'), ('ventas', 'Ventas'), ('clientes', 'Cliente')],
+        required=True,
+        label="Grupo de Usuario",
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
 
     username = forms.CharField(
         label="Nombre de usuario",
@@ -92,7 +99,7 @@ class UsuarioForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['empleado', 'username', 'first_name', 'last_name', 'email']
+        fields = ['empleado', 'grupo', 'username', 'first_name', 'last_name', 'email']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombres'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apellidos'}),
@@ -103,7 +110,8 @@ class UsuarioForm(forms.ModelForm):
         super(UsuarioForm, self).__init__(*args, **kwargs)
         # Definir y aplicar el orden deseado para los campos del formulario
         self.order_fields([
-            'empleado', 
+            'empleado',
+            'grupo',
             'username', 
             'first_name', 
             'last_name', 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1:3306
--- Tiempo de generación: 22-11-2025 a las 01:00:24
+-- Tiempo de generación: 02-12-2025 a las 23:23:43
 -- Versión del servidor: 9.1.0
 -- Versión de PHP: 8.3.14
 
@@ -51,7 +51,17 @@ CREATE TABLE IF NOT EXISTS `auth_group` (
   `name` varchar(150) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `auth_group`
+--
+
+INSERT INTO `auth_group` (`id`, `name`) VALUES
+(1, 'admin'),
+(2, 'rrhh'),
+(3, 'ventas'),
+(4, 'clientes');
 
 -- --------------------------------------------------------
 
@@ -68,7 +78,277 @@ CREATE TABLE IF NOT EXISTS `auth_group_permissions` (
   UNIQUE KEY `auth_group_permissions_group_id_permission_id_0cd325b0_uniq` (`group_id`,`permission_id`),
   KEY `auth_group_permissions_group_id_b120cbf9` (`group_id`),
   KEY `auth_group_permissions_permission_id_84c5c92e` (`permission_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=265 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `auth_group_permissions`
+--
+
+INSERT INTO `auth_group_permissions` (`id`, `group_id`, `permission_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 1, 15),
+(16, 1, 16),
+(17, 1, 17),
+(18, 1, 18),
+(19, 1, 19),
+(20, 1, 20),
+(21, 1, 21),
+(22, 1, 22),
+(23, 1, 23),
+(24, 1, 24),
+(25, 1, 25),
+(26, 1, 26),
+(27, 1, 27),
+(28, 1, 28),
+(29, 1, 29),
+(30, 1, 30),
+(31, 1, 31),
+(32, 1, 32),
+(33, 1, 33),
+(34, 1, 34),
+(35, 1, 35),
+(36, 1, 36),
+(37, 1, 37),
+(38, 1, 38),
+(39, 1, 39),
+(40, 1, 40),
+(41, 1, 41),
+(42, 1, 42),
+(43, 1, 43),
+(44, 1, 44),
+(45, 1, 45),
+(46, 1, 46),
+(47, 1, 47),
+(48, 1, 48),
+(49, 1, 49),
+(50, 1, 50),
+(51, 1, 51),
+(52, 1, 52),
+(53, 1, 53),
+(54, 1, 54),
+(55, 1, 55),
+(56, 1, 56),
+(57, 1, 57),
+(58, 1, 58),
+(59, 1, 59),
+(60, 1, 60),
+(61, 1, 61),
+(62, 1, 62),
+(63, 1, 63),
+(64, 1, 64),
+(65, 1, 65),
+(66, 1, 66),
+(67, 1, 67),
+(68, 1, 68),
+(69, 1, 69),
+(70, 1, 70),
+(71, 1, 71),
+(72, 1, 72),
+(73, 1, 73),
+(74, 1, 74),
+(75, 1, 75),
+(76, 1, 76),
+(77, 1, 77),
+(78, 1, 78),
+(79, 1, 79),
+(80, 1, 80),
+(81, 1, 81),
+(82, 1, 82),
+(83, 1, 83),
+(84, 1, 84),
+(85, 1, 85),
+(86, 1, 86),
+(87, 1, 87),
+(88, 1, 88),
+(89, 1, 89),
+(90, 1, 90),
+(91, 1, 91),
+(92, 1, 92),
+(93, 1, 93),
+(94, 1, 94),
+(95, 1, 95),
+(96, 1, 96),
+(97, 1, 97),
+(98, 1, 98),
+(99, 1, 99),
+(100, 1, 100),
+(101, 1, 101),
+(102, 1, 102),
+(103, 1, 103),
+(104, 1, 104),
+(105, 1, 105),
+(106, 1, 106),
+(107, 1, 107),
+(108, 1, 108),
+(109, 1, 109),
+(110, 1, 110),
+(111, 1, 111),
+(112, 1, 112),
+(113, 1, 113),
+(114, 1, 114),
+(115, 1, 115),
+(116, 1, 116),
+(117, 1, 117),
+(118, 1, 118),
+(119, 1, 119),
+(120, 1, 120),
+(121, 1, 121),
+(122, 1, 122),
+(123, 1, 123),
+(124, 1, 124),
+(125, 1, 125),
+(126, 1, 126),
+(127, 1, 127),
+(128, 1, 128),
+(129, 1, 129),
+(130, 1, 130),
+(131, 1, 131),
+(132, 1, 132),
+(133, 1, 133),
+(134, 1, 134),
+(135, 1, 135),
+(136, 1, 136),
+(137, 1, 137),
+(138, 1, 138),
+(139, 1, 139),
+(140, 1, 140),
+(141, 1, 141),
+(142, 1, 142),
+(143, 1, 143),
+(144, 1, 144),
+(145, 2, 25),
+(146, 2, 26),
+(147, 2, 27),
+(148, 2, 28),
+(149, 2, 29),
+(150, 2, 30),
+(151, 2, 31),
+(152, 2, 32),
+(153, 2, 33),
+(154, 2, 34),
+(155, 2, 35),
+(156, 2, 36),
+(157, 2, 37),
+(158, 2, 38),
+(159, 2, 39),
+(160, 2, 40),
+(161, 2, 41),
+(162, 2, 42),
+(163, 2, 43),
+(164, 2, 44),
+(165, 2, 45),
+(166, 2, 46),
+(167, 2, 47),
+(168, 2, 48),
+(169, 2, 49),
+(170, 2, 50),
+(171, 2, 51),
+(172, 2, 52),
+(173, 2, 53),
+(174, 2, 54),
+(175, 2, 55),
+(176, 2, 56),
+(177, 2, 57),
+(178, 2, 58),
+(179, 2, 59),
+(180, 2, 60),
+(181, 2, 61),
+(182, 2, 62),
+(183, 2, 63),
+(184, 2, 64),
+(185, 2, 65),
+(186, 2, 66),
+(187, 2, 67),
+(188, 2, 68),
+(189, 2, 69),
+(190, 2, 70),
+(191, 2, 71),
+(192, 2, 72),
+(193, 2, 73),
+(194, 2, 74),
+(195, 2, 75),
+(196, 2, 76),
+(197, 2, 77),
+(198, 2, 78),
+(199, 2, 79),
+(200, 2, 80),
+(201, 2, 81),
+(202, 2, 82),
+(203, 2, 83),
+(204, 2, 84),
+(205, 2, 85),
+(206, 2, 86),
+(207, 2, 87),
+(208, 2, 88),
+(209, 2, 89),
+(210, 2, 90),
+(211, 2, 91),
+(212, 2, 92),
+(213, 2, 93),
+(214, 2, 94),
+(215, 2, 95),
+(216, 2, 96),
+(217, 2, 97),
+(218, 2, 98),
+(219, 2, 99),
+(220, 2, 100),
+(221, 2, 101),
+(222, 2, 102),
+(223, 2, 103),
+(224, 2, 104),
+(225, 2, 105),
+(226, 2, 106),
+(227, 2, 107),
+(228, 2, 108),
+(229, 2, 109),
+(230, 2, 110),
+(231, 2, 111),
+(232, 2, 112),
+(233, 2, 113),
+(234, 2, 114),
+(235, 2, 115),
+(236, 2, 116),
+(237, 2, 117),
+(238, 2, 118),
+(239, 2, 119),
+(240, 2, 120),
+(241, 2, 121),
+(242, 2, 122),
+(243, 2, 123),
+(244, 2, 124),
+(245, 2, 125),
+(246, 2, 126),
+(247, 2, 127),
+(248, 2, 128),
+(249, 2, 129),
+(250, 2, 130),
+(251, 2, 131),
+(252, 2, 132),
+(253, 2, 133),
+(254, 2, 134),
+(255, 2, 135),
+(256, 2, 136),
+(257, 2, 137),
+(258, 2, 138),
+(259, 2, 139),
+(260, 2, 140),
+(261, 2, 141),
+(262, 2, 142),
+(263, 2, 143),
+(264, 2, 144);
 
 -- --------------------------------------------------------
 
@@ -259,7 +539,7 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
   `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `auth_user`
@@ -267,9 +547,13 @@ CREATE TABLE IF NOT EXISTS `auth_user` (
 
 INSERT INTO `auth_user` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `email`, `is_staff`, `is_active`, `date_joined`, `visible`) VALUES
 (7, 'pbkdf2_sha256$1000000$XY9fj3qPiS8njlqs3Qsch4$jZVX9RnGHmh+T00l4NzFf5orMo0o9PDSaSijpX5MEtM=', NULL, 0, 'PruebaE', 'Fue', 'Exitosa', 'prueba@dos.cl', 0, 1, '2025-11-03 17:16:05.900293', 1),
-(8, 'pbkdf2_sha256$1000000$3so01Xd6QVZwkGtexmUUKa$Abz9N8FXjyf86G/588X9bEDqe6Jasu+ycRz8376CK5k=', '2025-11-22 00:09:00.125059', 1, 'Dito', 'Dito', 'Plz', 'dito@dominio.cl', 0, 1, '2025-11-03 17:43:27.541306', 1),
-(11, 'pbkdf2_sha256$1000000$NmjOMZL5u4Q9IVIBFcmYO7$amBLi2vK0JbIJFTsyNMxwpwIPYk8GdIecDQW553XyHs=', NULL, 0, 'Pepino', 'Pepe Carlos', 'Cazuela Pollo', 'miau@miau.cl', 0, 0, '2025-11-21 23:41:47.005190', 0),
-(12, 'pbkdf2_sha256$1000000$7AU8L2WrPoXQ45sfLc1Jsy$0EaskGCmRP4KEW/99Jz4ynA0e0XNim2KAQvLL5QBe5Y=', NULL, 0, 'Testi', 'Testeo Testin', 'Fuentes García', 'testeo@dominio.com', 0, 1, '2025-11-22 00:09:30.639569', 1);
+(8, 'pbkdf2_sha256$1000000$3so01Xd6QVZwkGtexmUUKa$Abz9N8FXjyf86G/588X9bEDqe6Jasu+ycRz8376CK5k=', '2025-12-02 22:22:39.138817', 1, 'Dito', 'Dito', 'Plz', 'dito@dominio.cl', 1, 1, '2025-11-03 17:43:27.541306', 1),
+(11, 'pbkdf2_sha256$1000000$NmjOMZL5u4Q9IVIBFcmYO7$amBLi2vK0JbIJFTsyNMxwpwIPYk8GdIecDQW553XyHs=', NULL, 0, 'Pepino', 'Pepe Carlos', 'Cazuela Pollo', 'miau@miau.cl', 0, 1, '2025-11-21 23:41:47.005190', 1),
+(12, 'pbkdf2_sha256$1000000$7AU8L2WrPoXQ45sfLc1Jsy$0EaskGCmRP4KEW/99Jz4ynA0e0XNim2KAQvLL5QBe5Y=', NULL, 0, 'Testi', 'Testeo Testin', 'Fuentes García', 'testeo@dominio.com', 0, 1, '2025-11-22 00:09:30.639569', 1),
+(13, 'pbkdf2_sha256$1000000$Y1IQKfHSUYT4omDSWcoAUO$DAYUJWu9byuqIUcniezMrfowuf9IcHi2GkwpZqlfDOA=', '2025-12-02 22:09:23.526084', 0, 'forneria_rrhh', '', '', '', 0, 1, '2025-12-02 21:38:39.000000', 1),
+(14, 'pbkdf2_sha256$1000000$F9NOybeUL3bFu6bH3ct9kq$OV+QaAc/qQJSFQbSn69oHf1YD00YM9ANVYZhubcI9Pc=', '2025-12-02 22:24:20.502670', 0, 'forneria_ventas', '', '', '', 0, 1, '2025-12-02 21:38:51.000000', 1),
+(15, 'pbkdf2_sha256$1000000$Nbwsis3pNfUtyRsQPi0V7n$kRkJsSeisQT20a5/sBu+KOULuEaTtRhaor2O/857Cyc=', NULL, 0, 'forneria_cliente', '', '', '', 0, 1, '2025-12-02 21:39:08.019415', 1),
+(16, 'pbkdf2_sha256$1000000$XN3YjnEpe5U7BvIrpetSHW$nZRakbVPknOZcfx2q6fUxGky+PCyMcjPiymQHWkT+tI=', '2025-12-02 22:25:36.332312', 0, 'forneria_admin', '', '', '', 0, 1, '2025-12-02 21:39:55.000000', 1);
 
 -- --------------------------------------------------------
 
@@ -286,7 +570,16 @@ CREATE TABLE IF NOT EXISTS `auth_user_groups` (
   UNIQUE KEY `auth_user_groups_user_id_group_id_94350c0c_uniq` (`user_id`,`group_id`),
   KEY `auth_user_groups_user_id_6a12ed8b` (`user_id`),
   KEY `auth_user_groups_group_id_97559544` (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `auth_user_groups`
+--
+
+INSERT INTO `auth_user_groups` (`id`, `user_id`, `group_id`) VALUES
+(1, 16, 1),
+(2, 13, 2),
+(3, 14, 3);
 
 -- --------------------------------------------------------
 
@@ -318,7 +611,7 @@ CREATE TABLE IF NOT EXISTS `cargo` (
   `descripcion` varchar(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `cargo`
@@ -328,7 +621,8 @@ INSERT INTO `cargo` (`id`, `nombre`, `descripcion`, `visible`) VALUES
 (2, 'Prueba1', 'Esta es la primera prueba para cargojhg', 1),
 (3, 'Prueba2', 'Esta es para probar nombre rep', 1),
 (5, 'cargo1', 'prueba de caargooo1223.$#', 1),
-(6, 'Cargo Final', 'Este cargo demuestra que corre', 1);
+(6, 'Cargo Final', 'Este cargo demuestra que corre', 1),
+(7, 'Analista', 'Encargado de analisis de datos', 1);
 
 -- --------------------------------------------------------
 
@@ -474,7 +768,7 @@ CREATE TABLE IF NOT EXISTS `direccion` (
   `region` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `codigo_postal` int DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `direccion`
@@ -488,7 +782,9 @@ INSERT INTO `direccion` (`id`, `calle`, `numero`, `depto`, `comuna`, `region`, `
 (5, 'asd', 'asd', NULL, 'asd', 'X - Los Lagos', NULL),
 (6, 'asd', 'asd', NULL, 'asd', 'IX - La Araucanía', 3),
 (7, 'asd', 'asd', NULL, 'asd', 'VIII - Biobío', NULL),
-(8, '1231', '1231', '3123', '1321', 'IV - Coquimbo', 1231231);
+(8, '1231', '1231', '3123', '1321', 'IV - Coquimbo', 1231231),
+(9, 'Los Lúcumos', '1235', NULL, 'Coquimbo', 'IV - Coquimbo', NULL),
+(10, 'asdf', 'sadf', NULL, 'asfd', 'VI - O’Higgins', NULL);
 
 -- --------------------------------------------------------
 
@@ -509,7 +805,25 @@ CREATE TABLE IF NOT EXISTS `django_admin_log` (
   PRIMARY KEY (`id`),
   KEY `django_admin_log_content_type_id_c4bce8eb` (`content_type_id`),
   KEY `django_admin_log_user_id_c564eba6` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `django_admin_log`
+--
+
+INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
+(1, '2025-12-02 21:37:06.982713', '1', 'admin', 1, '[{\"added\": {}}]', 3, 8),
+(2, '2025-12-02 21:37:54.190126', '2', 'rrhh', 1, '[{\"added\": {}}]', 3, 8),
+(3, '2025-12-02 21:38:00.395920', '3', 'ventas', 1, '[{\"added\": {}}]', 3, 8),
+(4, '2025-12-02 21:38:04.055151', '4', 'clientes', 1, '[{\"added\": {}}]', 3, 8),
+(5, '2025-12-02 21:38:40.097865', '13', 'forneria_rrhh', 1, '[{\"added\": {}}]', 4, 8),
+(6, '2025-12-02 21:38:51.978494', '14', 'forneria_ventas', 1, '[{\"added\": {}}]', 4, 8),
+(7, '2025-12-02 21:39:08.492938', '15', 'forneria_cliente', 1, '[{\"added\": {}}]', 4, 8),
+(8, '2025-12-02 21:39:55.978323', '16', 'forneria_admin', 1, '[{\"added\": {}}]', 4, 8),
+(9, '2025-12-02 21:40:58.179328', '16', 'forneria_admin', 2, '[{\"changed\": {\"fields\": [\"Groups\"]}}]', 4, 8),
+(10, '2025-12-02 21:41:15.718988', '13', 'forneria_rrhh', 2, '[{\"changed\": {\"fields\": [\"Groups\"]}}]', 4, 8),
+(11, '2025-12-02 21:41:22.638475', '14', 'forneria_ventas', 2, '[{\"changed\": {\"fields\": [\"Groups\"]}}]', 4, 8),
+(12, '2025-12-02 22:15:42.954388', '3', 'ventas', 2, '[]', 3, 8);
 
 -- --------------------------------------------------------
 
@@ -581,7 +895,7 @@ CREATE TABLE IF NOT EXISTS `django_migrations` (
   `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_spanish_ci NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `django_migrations`
@@ -606,7 +920,8 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (16, 'auth', '0011_update_proxy_permissions', '2025-10-24 19:55:40.695683'),
 (17, 'auth', '0012_alter_user_first_name_max_length', '2025-10-24 19:55:40.722406'),
 (18, 'sessions', '0001_initial', '2025-10-24 19:55:40.752836'),
-(19, 'rrhh', '0001_initial', '2025-11-17 20:58:10.125474');
+(19, 'rrhh', '0001_initial', '2025-11-17 20:58:10.125474'),
+(20, 'rrhh', '0002_liquidacion_visible', '2025-11-25 04:28:01.392211');
 
 -- --------------------------------------------------------
 
@@ -633,8 +948,10 @@ INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALU
 ('54hzklg5xldpzth9dme6u73t7f6nh84d', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vKcdW:z-Gd3pbBhddj6EPhPcknJnidXIBdZVNz_vc_hCVuLY0', '2025-11-30 13:17:46.580590'),
 ('vsnohs2p9j5s9uhciw5eoq6pdelwyzch', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vL71S:GcKX5vkFMrRHhHufja9PREZLBcTc91r08RHk14lZrmo', '2025-12-01 21:44:30.083657'),
 ('md0utqg8sdw7igs7e7myog1hg8d1ib76', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vL7A6:0PbZ3Qrf6GUt3rCbM57cRYGHayj27Oe3ortXDEQhLxI', '2025-12-01 21:53:26.568971'),
-('rq472rnphh88vi7sjg2lpsgr6oaz0gn6', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vMWoG:_BGMqMJQPWMqGVqrDoB7D2RZetBVAC7hOz7YwxdtW1k', '2025-12-05 19:28:44.943719'),
-('pqiw6aizxmgfifjcz9gt68nje9uxnina', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vMbBU:yfzCM9qp6xy7qnzWdiJy1kk6M7ZA2IvjjpO87WwJolg', '2025-12-06 00:09:00.130215');
+('rshxwl9ngjrb6ekia8ldxrbgyvpjpxns', '.eJxVjDsOwjAQRO_iGln-xbEp6TmDtevd4ABypDipEHcHSymgmWLem3mJBPtW0t54TTOJs9BenH5LhPzg2gndod4WmZe6rTPKrsiDNnldiJ-Xw_07KNBKX4MbTB5dgKjAkUenLeLoTR7QTqBwUhBiMEZHti4GYqO-wTlojlaReH8ADEU4Mg:1vQYoS:41d4YhFgUNMLpC37k4UXgI2Roxg9co8vjX4ANDzlu7U', '2025-12-16 22:25:36.337370'),
+('pqiw6aizxmgfifjcz9gt68nje9uxnina', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vMbBU:yfzCM9qp6xy7qnzWdiJy1kk6M7ZA2IvjjpO87WwJolg', '2025-12-06 00:09:00.130215'),
+('712qn9ciiq836fg6r6bzbtz38i95nfrt', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vNaWq:Hs9veNzkK_BPREd0PO_Jv_KmP1DViHPftuRPb9WZ-a0', '2025-12-08 17:39:08.054985'),
+('w8iwxjifxv4lfzxqd5km37zolvoopxvc', '.eJxVjMsOwiAQRf-FtSFAh5dL934DGWCQqoGktCvjv2uTLnR7zzn3xQJuaw3boCXMmZ2ZY6ffLWJ6UNtBvmO7dZ56W5c58l3hBx382jM9L4f7d1Bx1G8NRRuUWpNxYBK6CYTXk3ORIggBpVhJNluZjDDKAilUQnpftDOZRJHs_QHDBzb1:1vQY1l:8fxhRK9JedIs_P7GPaVVYsR7tO17SztUnBg5sQ3I2qs', '2025-12-16 21:35:17.962182');
 
 -- --------------------------------------------------------
 
@@ -659,7 +976,7 @@ CREATE TABLE IF NOT EXISTS `empleado` (
   UNIQUE KEY `fono_UNIQUE` (`fono`),
   UNIQUE KEY `fk_id_direccion` (`id_direccion`) USING BTREE,
   UNIQUE KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Volcado de datos para la tabla `empleado`
@@ -670,10 +987,13 @@ INSERT INTO `empleado` (`id`, `nombres`, `A_paterno`, `A_materno`, `run`, `corre
 (3, 'Pepe Carlos', 'Cazuela', 'Pollo', 'sdadas', 'miau@miau.cl', 'adasda', 2, 11, 1),
 (4, 'Pepe Carlos', 'Cazuela', 'Pollo', 'a', 'miau@miau.cl', 'a', 3, NULL, 1),
 (5, 'Prueba', 'Uno', 'One', 'asdasda', 'miau@miau.com', 'asdsada', 4, NULL, 1),
-(6, 'asd', 'asd', 'sad', 'asd', 'asd@sa.com', 'asd', 5, NULL, 1),
-(7, 'asd', 'ads', 'asd', '123123123', 'asd@faadsd.cl', 'asdasd', 6, NULL, 1),
-(8, 'editado', 'asd', 'asd', '1111111-4', 'asd@sdfs.cl', 'sdas', 7, NULL, 1),
-(9, '123', '2123', '31232', '21990927-6', 'qewqweasd@asd.com', '123124124', 8, NULL, 1);
+(6, 'asd', 'asd', 'sad', 'asd', 'asd@sa.com', 'asd', 5, NULL, 0),
+(7, 'asd', 'ads', 'asd', '123123123', 'asd@faadsd.cl', 'asdasd', 6, NULL, 0),
+(8, 'editado', 'asd', 'asd', '1111111-4', 'asd@sdfs.cl', 'sdas', 7, NULL, 0),
+(9, '123', '2123', '31232', '21990927-6', 'qewqweasd@asd.com', '123124124', 8, NULL, 1),
+(10, 'Juan', 'Perez', 'Gonzalez', '12345678-9', 'juan@dominio.com', '987654321', 1, NULL, 1),
+(11, 'Alberto', 'Abett', 'Alvarez', '5557222-4', 'alberto@gmail.com', '+56966067356', 9, NULL, 1),
+(12, 'asddfgds', 'adsf', 'gfds', '13386734-1', 'correo@dominio.cl', 'telefono', 10, NULL, 1);
 
 -- --------------------------------------------------------
 
