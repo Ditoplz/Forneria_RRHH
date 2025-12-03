@@ -60,6 +60,12 @@ class EmpleadoForm(forms.ModelForm):
             raise ValidationError("Este RUN ya está registrado.")
         return run
 
+    def clean_correo(self):
+        correo = self.cleaned_data['correo']
+        # Excluye el empleado actual de la búsqueda para permitirle guardar su propio correo
+        if Empleado.objects.filter(correo__iexact=correo).exclude(pk=self.instance.pk).exists():
+            raise ValidationError("Este correo electrónico ya está registrado en otro empleado.")
+        return correo
 
 
         
@@ -201,11 +207,49 @@ class UsuarioForm(forms.ModelForm):
 
         return user
     
-class UsuarioEditarForm(forms.ModelForm):    
-    
+class UsuarioEditarForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        required=False,
+        label="Nueva Contraseña"
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        required=False,
+        label="Repetir Contraseña"
+    )
+
     class Meta:
-        model = AuthUser
-        fields = ['first_name','last_name','username','email']
+        model = User
+        fields = ['username']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        # Excluye el usuario actual de la búsqueda para permitirle guardar su propio nombre de usuario
+        if User.objects.filter(username__iexact=username).exclude(pk=self.instance.pk).exists():
+            raise ValidationError("Este nombre de usuario ya está en uso. Por favor, elige otro.")
+        return username
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        password2 = cleaned_data.get("password2")
+
+        if password and password != password2:
+            self.add_error('password2', "Las contraseñas no coinciden.")
+        return cleaned_data
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        password = self.cleaned_data.get("password")
+        if password:
+            user.set_password(password)
+        if commit:
+            user.save()
+        return user
         
 
 class ContratoForm(forms.ModelForm):
@@ -236,32 +280,62 @@ class ContratoForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
 
+class ContratoChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        # Formato personalizado para mostrar el contrato en el selector
+        return f"Contrato del {obj.fecha_inicio.strftime('%d/%m/%Y')} al {obj.fecha_fin.strftime('%d/%m/%Y')}"
+
 class LiquidacionForm(forms.ModelForm):
+    # 1. Campo de contrato con formato personalizado
+    contrato = ContratoChoiceField(
+        queryset=Contrato.objects.none(),
+        label="Contrato"
+    )
 
     class Meta:
         model = Liquidacion
         fields = [
             "contrato",
             "periodo",
+            "fecha_cierre",
             "imponible",
             "no_imponible",
             "tributable",
             "descuentos",
             "bruto",
             "liquido",
-            "fecha_cierre",
             "estado",
         ]
         widgets = {
-            "periodo": forms.DateInput(attrs={"type": "date"}),
-            "fecha_cierre": forms.DateInput(attrs={"type": "date"}),
+            # 3. Campos numéricos sin flechas y con mínimo 0
+            "imponible": forms.TextInput(attrs={'inputmode': 'numeric'}),
+            "no_imponible": forms.TextInput(attrs={'inputmode': 'numeric'}),
+            "tributable": forms.TextInput(attrs={'inputmode': 'numeric'}),
+            "descuentos": forms.TextInput(attrs={'inputmode': 'numeric'}),
+            "bruto": forms.TextInput(attrs={'inputmode': 'numeric', 'readonly': True}),
+            "liquido": forms.TextInput(attrs={'inputmode': 'numeric', 'readonly': True}), # 5. Líquido es solo lectura
+            # 2. Campos de fecha
+            "periodo": forms.DateInput(attrs={"type": "date", 'class': 'form-control'}),
+            "fecha_cierre": forms.DateInput(attrs={"type": "date", 'class': 'form-control'}),
+            # 4. Campo estado como un selector
+            "estado": forms.Select(choices=[('Pendiente', 'Pendiente'), ('Emitido', 'Emitido'), ('Pagado', 'Pagado'), ('Anulado', 'Anulado')]),
+        }
+        labels = {
+            'periodo': 'Inicio del Periodo',
+            'fecha_cierre': 'Cierre del Periodo',
         }
 
     def __init__(self, *args, **kwargs):
         empleado_id = kwargs.pop("empleado_id", None)
         super().__init__(*args, **kwargs)
 
+        # Filtra los contratos para el empleado seleccionado
         if empleado_id:
             self.fields["contrato"].queryset = Contrato.objects.filter(empleado_id=empleado_id)
         else:
             self.fields["contrato"].queryset = Contrato.objects.none()
+
+        # Aplica la clase de Bootstrap a todos los campos
+        for field_name, field in self.fields.items():
+            if not isinstance(field.widget, forms.DateInput): # Las fechas ya tienen la clase
+                field.widget.attrs['class'] = 'form-control'

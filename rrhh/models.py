@@ -293,18 +293,6 @@ class Empleado(models.Model):
     class Meta:
         managed = False
         db_table = 'empleado'
-        
-    def clean_correo(self):
-        correo = self.cleaned_data['correo']
-        if Empleado.objects.filter(correo=correo).exists():
-            raise ValidationError("Este correo ya está registrado.")
-        return correo
-    
-    def clean_fono(self):
-        fono = self.cleaned_data['fono']
-        if not re.match(r'^\d{9}$', str(fono)):
-            raise ValidationError("El número debe tener 9 dígitos.")
-        return fono
     
     def __str__(self):
         return f"{self.nombres} {self.a_paterno} {self.a_materno}"

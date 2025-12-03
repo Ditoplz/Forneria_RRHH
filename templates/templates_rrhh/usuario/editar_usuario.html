@@ -14,23 +14,34 @@
         <div class="card-body bg-light">
             <form method="POST" action="{% url 'editar_usuario' usuario.id %}" class="p-3">
                 {% csrf_token %}
-                {{ form.non_field_errors }}
+                
+                <!-- Errores generales del formulario -->
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
                 <div class="row">
-                    <div class="col-md-3 mb-3">
-                        {{ form.first_name.label_tag }}
-                        {{ form.first_name }}
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        {{ form.last_name.label_tag }}
-                        {{ form.last_name }}
-                    </div>
-                    <div class="col-md-3 mb-3">
+                    <!-- Campo Nombre de Usuario -->
+                    <div class="col-md-12 mb-3">
                         {{ form.username.label_tag }}
                         {{ form.username }}
+                        {{ form.username.errors }}
                     </div>
-                    <div class="col-md-3 mb-3">
-                        {{ form.email.label_tag }}
-                        {{ form.email }}
+
+                    <!-- Campo Contraseña -->
+                    <div class="col-md-6 mb-3">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        {{ form.password.errors }}
+                    </div>
+
+                    <!-- Campo Repetir Contraseña -->
+                    <div class="col-md-6 mb-3">
+                        {{ form.password2.label_tag }}
+                        {{ form.password2 }}
+                        {{ form.password2.errors }}
                     </div>
                 </div>
                 <div class="d-flex justify-content-between mt-4">

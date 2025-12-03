@@ -29,9 +29,6 @@
                         {% endfor %}
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-arrow-clockwise"></i> Actualizar Página
-                </button>
             </form>
 
             <!-- Formulario 2: Crear liquidación -->
@@ -69,4 +66,66 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const empleadoSelect = document.getElementById('id_empleado');
+
+    empleadoSelect.addEventListener('change', function() {
+        const empleadoId = this.value;
+        const currentUrl = new URL(window.location.href);
+
+        if (empleadoId) {
+            // Si se selecciona un empleado, se añade el parámetro a la URL y se recarga.
+            currentUrl.searchParams.set('empleado', empleadoId);
+            window.location.href = currentUrl.toString();
+        }
+    });
+
+    // --- Lógica para el cálculo automático del sueldo líquido ---
+    const imponibleField = document.getElementById('id_imponible');
+    const noImponibleField = document.getElementById('id_no_imponible');
+    const tributableField = document.getElementById('id_tributable');
+    const descuentosField = document.getElementById('id_descuentos');
+    const brutoField = document.getElementById('id_bruto');
+    const liquidoField = document.getElementById('id_liquido');
+
+    // Función para calcular y actualizar los campos
+    function calcularSueldo() {
+        const imponible = parseFloat(imponibleField.value) || 0;
+        const no_imponible = parseFloat(noImponibleField.value) || 0;
+        const tributable = parseFloat(tributableField.value) || 0;
+        const descuentos = parseFloat(descuentosField.value) || 0;
+
+        // El sueldo bruto es la suma de haberes
+        const bruto = imponible + no_imponible;
+        brutoField.value = bruto;
+
+        // El sueldo líquido es el bruto menos los descuentos
+        const liquido = bruto - descuentos;
+        liquidoField.value = liquido;
+    }
+
+    // Añadimos el evento 'input' a los campos que afectan el cálculo
+    const camposDeCalculo = [imponibleField, noImponibleField, tributableField, descuentosField];
+    camposDeCalculo.forEach(field => {
+        if (field) field.addEventListener('input', calcularSueldo);
+    });
+
+    // --- Lógica para permitir solo dígitos en campos numéricos ---
+    const camposNumericos = [imponibleField, noImponibleField, tributableField, descuentosField];
+
+    camposNumericos.forEach(field => {
+        if (field) {
+            field.addEventListener('input', function(e) {
+                // Reemplaza cualquier caracter que no sea un dígito con una cadena vacía
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        }
+    });
+
+});
+</script>
 {% endblock %}

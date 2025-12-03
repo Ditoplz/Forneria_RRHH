@@ -266,7 +266,7 @@ def todos_usuarios(request):
 
 @grupo_requerido('rrhh','admin')
 def editar_usuario(request, id_usuario):
-    usuario = get_object_or_404(AuthUser, id=id_usuario)
+    usuario = get_object_or_404(User, id=id_usuario)
 
     if request.method == 'POST':
         form = UsuarioEditarForm(request.POST, instance=usuario)
@@ -435,8 +435,10 @@ def listar_liquidaciones(request):
         base_query = base_query.filter(empleado__nombres__icontains=query)
 
     # Filtro por rol de usuario
-    if not user.is_superuser:
+    # Un empleado normal solo puede ver su liquidación. RRHH y Admin ven todo.
+    if not user.is_superuser and not user.groups.filter(name__in=['rrhh', 'admin']).exists():
         base_query = base_query.filter(empleado__user=user)
+
 
     # Si la petición es AJAX, devolvemos los datos en formato JSON
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':

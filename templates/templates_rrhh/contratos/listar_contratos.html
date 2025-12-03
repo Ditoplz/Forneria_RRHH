@@ -70,6 +70,13 @@
 {% endblock %}
 
 {% block javascripts %}
+<!-- SweetAlert2 para diálogos modales atractivos -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- jsPDF para la generación de PDFs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // --- Referencias a los elementos ---
@@ -139,6 +146,94 @@ document.addEventListener('DOMContentLoaded', function() {
         searchTimeout = setTimeout(fetchData, 200); 
     });
 
+    // --- Lógica para Exportar y Eliminar con confirmación ---
+    document.addEventListener('click', function(e) {
+        const exportBtn = e.target.closest('.export-btn-individual');
+        const deleteLink = e.target.closest('a[href*="eliminar"]');
+
+        if (deleteLink && deleteLink.closest('#contratos-table-body')) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡No podrás revertir esta acción!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, ¡eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteLink.href;
+                }
+            });
+        } else if (exportBtn) {
+            e.preventDefault();
+            const contratoId = exportBtn.dataset.contratoId;
+            const row = exportBtn.closest('tr');
+
+            Swal.fire({
+                title: 'Seleccione el formato de exportación',
+                text: `¿Desea exportar el contrato #${contratoId} como Word o PDF?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Word (.doc)',
+                cancelButtonText: 'Cancelar',
+                showDenyButton: true,
+                denyButtonText: `PDF (.pdf)`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    exportRowToDoc(row, `contrato_${contratoId}.doc`);
+                    Swal.fire('¡Exportado!', 'El archivo Word ha sido generado.', 'success');
+                } else if (result.isDenied) {
+                    exportRowToPdf(row, `contrato_${contratoId}.pdf`, `Detalle de Contrato #${contratoId}`);
+                    Swal.fire('¡Exportado!', 'El archivo PDF ha sido generado.', 'success');
+                }
+            });
+        }
+    });
+
+    function exportRowToDoc(row, filename = '') {
+        if (!row) return;
+        let data = "Datos del Contrato:\n\n";
+        const table = row.closest('table');
+        const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent.trim()).filter(h => h !== 'Acciones');
+        const rowData = Array.from(row.querySelectorAll("td")).map(td => td.textContent.trim());
+
+        headers.forEach((header, index) => {
+            data += `${header}: ${rowData[index] || ''}\n`;
+        });
+
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    function exportRowToPdf(row, filename = '', title = '') {
+        if (!row) return;
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        const table = row.closest('table');
+        const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.textContent.trim()).filter(h => h !== 'Acciones');
+        const rowData = Array.from(row.querySelectorAll("td")).map(td => td.textContent.trim());
+        const body = headers.map((header, index) => [header, rowData[index] || '']);
+
+        doc.setFontSize(18);
+        doc.text(title, 14, 22);
+        doc.autoTable({
+            startY: 30,
+            head: [['Campo', 'Valor']],
+            body: body,
+        });
+        doc.save(filename);
+    }
 });
 </script>
 {% endblock %}
